@@ -7,6 +7,7 @@
 
 
 
+
 # 1. INTRODUCCION
 **Descripción General:** Los Pollos Hermanos son una cadena de restaurante altamente reconocido a nivel mundial por su exquisites y buen servicio. Asi que una pagina que ayude a administrar las sucursales ayudando el monitoreo y el manejo de inventario pueda ayudar a  agilizar la producción con la mejor calidad.
 
