@@ -31,4 +31,12 @@
 **Arquitectura del diseño**
 * **Capa de presentación:** HTML,CSS,Bootstrap,javascript
 * **Capa de aplicación:** Nodejs + Express
-* **Capa de datos:** Mongodb  
+* **Capa de datos:** Mongodb
+
+# 4 Diagramas de Casos de Uso 
+**Caso de uso Login**
+![Diagrama de caso de uso Login](Imagenes/Login.png)
+
+# 5 Descripción de Casos de Uso 
+**Caso de uso Login**
+![Diagrama de caso de uso Login](Imagenes/DescripcionLogin.png)
