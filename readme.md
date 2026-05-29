@@ -35,8 +35,8 @@
 
 # 4 Diagramas de Casos de Uso 
 **Caso de uso Login**
-![Diagrama de caso de uso Login](imagenes/Login.png)
+![Diagrama de caso de uso Login](Imagenes/Login.png)
 
 # 5 Descripción de Casos de Uso 
 **Caso de uso Login**
-![Diagrama de caso de uso Login](imagenes/DescripcionLogin.png)
+![Diagrama de caso de uso Login](Imagenes/DescripcionLogin.png)
