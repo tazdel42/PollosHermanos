@@ -104,5 +104,5 @@ Frontend estático y API desacoplada para interoperabilidad
 **Pagina Inicial**
 ![Login](<WhatsApp Image 2026-05-29 at 8.41.02 PM.jpeg>)
 
-**Pagina de registro**
+**Pagina de Recuperación**
 ![Pagina de Registro](<WhatsApp Image 2026-05-29 at 8.41.21 PM registro.jpeg>)
