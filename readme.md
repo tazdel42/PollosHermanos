@@ -34,7 +34,7 @@
 * **Capa de aplicación:** Nodejs + Express
 * **Capa de datos:** Mongodb
 
-# 3. Requisitos
+# 3. REQUISITOS
   **Funcionales:**
 Los principales requisitos funcionales de la plataforma de comercio electrónico Los Pollos Hermanos son:
 * **Autenticación e Inicio de sesión:** Permite a los usuarios acceder al sistema de forma segura mediante un formulario de credenciales y comprueba que los datos ingresados sean correctos.
@@ -74,6 +74,20 @@ Los principales requisitos funcionales de la plataforma de comercio electrónico
 * Arquitectura basada en estándares de diseño de software para facilitar mejoras futuras
 * Mecanismos de seguridad avanzados en la base de datos para evitar accesos no autorizados
 
+
+## **Tecnicos:**
+
+* **Lenguaje:** Javascript (Frontend y backed)
+* **Frameworks/Librerías:** Express.js, Bootstrap
+* **Base de datos:** MongoDB 6.0
+* **Herramientas:**  Figma (prototipado), GitHub (control de versiones), VS Code
+
+## **Arquitectura del Sistema:**
+Modularidad mediante rutas y controladores en Node.js
+
+Componentes RESTful: usuarios, artículos, pedidos, pagos
+Frontend estático y API desacoplada para interoperabilidad
+
 # 4 Diagramas de Casos de Uso 
 **Caso de uso Login**
 ![Diagrama de caso de uso Login](Imagenes/Login.png)
@@ -81,3 +95,14 @@ Los principales requisitos funcionales de la plataforma de comercio electrónico
 # 5 Descripción de Casos de Uso 
 **Caso de uso Login**
 ![Diagrama de caso de uso Login](Imagenes/DescripcionLogin.png)
+
+# 6 Diagrama Entidad-Relación
+**Entidad relación**
+![Diagrama Entidad-Relacion](<WhatsApp Image 2026-05-29 at 3.39.09 PM.jpeg>)
+
+# Interfaz Figma
+**Pagina Inicial**
+![Login](<WhatsApp Image 2026-05-29 at 8.41.02 PM.jpeg>)
+
+**Pagina de registro**
+![Pagina de Registro](<WhatsApp Image 2026-05-29 at 8.41.21 PM registro.jpeg>)
