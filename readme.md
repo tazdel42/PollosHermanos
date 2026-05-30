@@ -98,11 +98,11 @@ Frontend estático y API desacoplada para interoperabilidad
 
 # 6 Diagrama Entidad-Relación
 **Entidad relación**
-![Diagrama Entidad-Relacion](<WhatsApp Image 2026-05-29 at 3.39.09 PM.jpeg>)
+![Entidad-Relación](<WhatsApp Image 2026-05-29 at 3.39.09 PM-1.jpeg>)
 
 # Interfaz Figma
 **Pagina Inicial**
-![Login](<WhatsApp Image 2026-05-29 at 8.41.02 PM.jpeg>)
+![Login](<WhatsApp Image 2026-05-29 at 8.41.02 PM-1.jpeg>)
 
 **Pagina de Recuperación**
-![Pagina de Registro](<WhatsApp Image 2026-05-29 at 8.41.21 PM registro.jpeg>)
+![Recuperar contraseña](<WhatsApp Image 2026-05-29 at 8.41.21 PM registro-1.jpeg>)
