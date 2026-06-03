@@ -11,45 +11,76 @@
 
     <div class="Barrasuperior d-flex align-items-center justify-content-between px-3">
         <button id="btnToggle" class="btn btn-light me-2">☰</button>
-        
         <h1 class="text-start fs-4 m-0 flex-grow-1">Bienvenido</h1>
         <span class="user-email">usuario_prueba@correo.com</span>
     </div>
 
     <div id="sidebar" class="sidebar">
-        <a href="#">Inicio</a>
-        <a href="#">Menú</a>
+        <a href="PaginaInicial.html">Inicio</a>
+        <a href="#">Menú Diario</a>
         <a href="#">Proveedores</a>
         <a href="#">Empleados</a>
         <a href="#">Cerrar Sesión</a>
     </div>
 
     <div id="contenido" class="contenido-principal p-4">
-        <div class="d-flex justify-content-center p-2">
-            <div class="card" style="width: 18rem;">
-                <img src="img/Provedorimg.png" class="card-img-top" alt="Imagen de la carta">
+        
+        <div class="row g-4 justify-content-start">
+            
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <img src="img/Provedorimg.png" class="card-img-top" alt="Imagen de la carta">
+                    <div class="card-body">
+                        <h5 class="card-title">Proveedores</h5>
+                        <p class="card-text">Información sobre el proveedor.</p>
+                        <a href="#" class="btn btn-primary">Entrar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <img src="img/Empleado.png" class="card-img-top" alt="Imagen de la carta">
+                    <div class="card-body">
+                        <h5 class="card-title">Empleados</h5>
+                        <p class="card-text">Información sobre el empleado.</p>
+                        <a href="#" class="btn btn-primary">Entrar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100">
+                    <img src="img/Seguridad.png" class="card-img-top" alt="Imagen de la carta">
+                    <div class="card-body">
+                        <h5 class="card-title">Seguridad</h5>
+                        <p class="card-text">Información sobre la seguridad.</p>
+                        <a href="#" class="btn btn-primary">Entrar</a>
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+                <img src="img/Menuimg.png" class="card-img-top" alt="Menú">
                 <div class="card-body">
-                    <h5 class="card-title">Proveedores</h5>
-                    <p class="card-text">Información sobre el proveedor.</p>
+                    <h5 class="card-title">Menú Diario</h5>
+                    <p class="card-text">Gestión de platillos y recetas del día.</p>
                     <a href="#" class="btn btn-primary">Entrar</a>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="contenido" class="contenido-principal p-4">
-        <div class="d-flex justify-content-center p-2">
-            <div class="card" style="width: 18rem;">
-                <img src="img/Empleado.png" class="card-img-top" alt="Imagen de la carta">
-                <div class="card-body">
-                    <h5 class="card-title">Empleados</h5>
-                    <p class="card-text">Información sobre el empleado.</p>
-                    <a href="#" class="btn btn-primary">Entrar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="js/sidebar.js"></script>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        </div> </div> <script src="js/sidebar.js"></script>
 </body>
 </html>
