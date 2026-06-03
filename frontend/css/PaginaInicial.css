@@ -34,14 +34,16 @@
 
 
 .sidebar {
-    width: 200px;         
-    height: calc(100vh - 60px); 
-    background-color: #2c2c72;  
-    position: fixed;     
-    top: 60px;                 
+    width: 250px; /* Ajusta al ancho real que tenga tu sidebar */
+    position: fixed;
+    top: 60px; /* Altura de tu Barrasuperior */
     left: 0;
+    height: calc(100vh - 60px);
+    background-color: #371991;
     padding-top: 20px;
     user-select: none;
+    
+    transition: all 0.3s ease-in-out; 
 }
 
 .sidebar h2 {
@@ -77,8 +79,23 @@ body {
 
 .card {
 
-    margin-left: 200px;
+    margin-left: 20px;
     margin-right: 20px;
-    margin-top: 8px;
+    margin-top: 1px;
+    user-select: none;
+    
 
+}
+
+.contenido-principal {
+    margin-left: 250px; 
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar.oculto {
+    left: -250px;
+}
+
+.contenido-principal.expandido {
+    margin-left: 0;
 }
