@@ -1,0 +1,44 @@
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('floatingInput').value;
+    const password = document.getElementById('floatingPassword').value;
+    const alertBox = document.getElementById('alertBox');
+
+    // Alerta de Reinicio
+    alertBox.classList.add('d-none');
+    alertBox.textContent = '';
+
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Guarda el token en localStorage
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userRole', data.rol);
+            localStorage.setItem('userName', data.nombre);
+
+            // Esto es el mensaje de éxito
+            alertBox.classList.remove('d-none', 'alert-danger');
+            alertBox.classList.add('alert-success');
+            alertBox.textContent = '¡Inicio de sesión exitoso!';
+
+        } else {
+            // Mostrar error
+            alertBox.classList.remove('d-none');
+            alertBox.textContent = data.message || 'Error al iniciar sesión';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alertBox.classList.remove('d-none');
+        alertBox.textContent = 'Error de conexión con el servidor.';
+    }
+});
