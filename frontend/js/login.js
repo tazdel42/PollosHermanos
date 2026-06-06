@@ -29,7 +29,12 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             // Esto es el mensaje de éxito
             alertBox.classList.remove('d-none', 'alert-danger');
             alertBox.classList.add('alert-success');
-            alertBox.textContent = '¡Inicio de sesión exitoso!';
+            alertBox.textContent = '¡Inicio de sesión exitoso! Bienvenido :D ';
+
+            // Redirige a la página principal
+            setTimeout(() => {
+                window.location.href = '/PaginaInicial.html';
+            }, 1500);
 
         } else {
             // Mostrar error
