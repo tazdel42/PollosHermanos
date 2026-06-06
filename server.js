@@ -20,6 +20,8 @@ connectDB();
 // Define las rutas de la API
 app.use('/api/auth', require('./backend/routes/authRoutes'));
 
+app.use('/api/inventory', require('./backend/routes/inventoryRoutes'));
+
 // Levanta el servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
