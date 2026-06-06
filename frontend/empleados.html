@@ -56,29 +56,6 @@
                     </thead>
 
                     <tbody id="tablaUsuarios">
-
-                        <tr>
-                            <td>1001</td>
-                            <td>juanp</td>
-                            <td>Administrador</td>
-                            <td>Completo</td>
-                            <td>
-                                <span class="badge bg-success">
-                                    Activo
-                                </span>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-warning btn-sm">
-                                    Editar
-                                </button>
-
-                                <button class="btn btn-danger btn-sm">
-                                    Eliminar
-                                </button>
-                            </td>
-                        </tr>
-
                     </tbody>
 
                 </table>
@@ -113,25 +90,6 @@
                     </thead>
 
                     <tbody id="tablaEmpleados">
-
-                        <tr>
-                            <td>1001</td>
-                            <td>Juan Pérez</td>
-                            <td>Cocinero</td>
-                            <td>6671234567</td>
-                            <td>juan@pollos.com</td>
-
-                            <td>
-                                <button class="btn btn-warning btn-sm">
-                                    Editar
-                                </button>
-
-                                <button class="btn btn-danger btn-sm">
-                                    Baja
-                                </button>
-                            </td>
-                        </tr>
-
                     </tbody>
 
                 </table>
@@ -148,6 +106,10 @@
 
             <div class="card-body">
 
+                <button class="btn btn-success mb-3" onclick="registrarAsistencia()">
+                    + Registrar Asistencia
+                </button>
+
                 <table class="table table-hover">
 
                     <thead>
@@ -162,47 +124,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-
-                        <tr>
-                            <td>Juan Pérez</td>
-                            <td>12/06/2026</td>
-                            <td>08:00</td>
-                            <td>16:00</td>
-                            <td>8</td>
-                            <td>$500</td>
-
-                            <td>
-                                <span class="badge bg-success">
-                                    Presente
-                                </span>
-                            </td>
-
-                            <td>
-                                <button class="btn btn-primary btn-sm" onclick="modificarAsistencia(this)">
-                                    Modificar
-                                </button>
-                            </td>
-
-                            <th>Acciones</th>
-                        </tr>
-
-                        <tr>
-                            <td>María López</td>
-                            <td>12/06/2026</td>
-                            <td>09:00</td>
-                            <td>17:00</td>
-                            <td>8</td>
-                            <td>$450</td>
-
-                            <td>
-                                <span class="badge bg-danger">
-                                    Ausente
-                                </span>
-                            </td>
-
-                        </tr>
-
+                    <tbody id="tablaControl">
                     </tbody>
 
                 </table>
@@ -213,6 +135,153 @@
 
     </div>
 
+    <!-- Modal Usuario -->
+    <div class="modal fade" id="usuarioModal" tabindex="-1" aria-labelledby="usuarioModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="usuarioModalLabel">Editar Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="usuarioForm">
+                        <input type="hidden" id="usuarioId">
+                        <div class="mb-3">
+                            <label for="usuarioRol" class="form-label">Rol</label>
+                            <select class="form-select" id="usuarioRol">
+                                <option value="admin">Admin</option>
+                                <option value="empleado">Empleado</option>
+                                <option value="cocinero">Cocinero</option>
+                                <option value="limpieza">Limpieza</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="usuarioPermisos" class="form-label">Permisos</label>
+                            <select class="form-select" id="usuarioPermisos">
+                                <option value="Básico">Básico</option>
+                                <option value="Completo">Completo</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="usuarioEstado" class="form-label">Estado</label>
+                            <select class="form-select" id="usuarioEstado">
+                                <option value="Activo">Activo</option>
+                                <option value="Inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarUsuario()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Asistencia -->
+    <div class="modal fade" id="asistenciaModal" tabindex="-1" aria-labelledby="asistenciaModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="asistenciaModalLabel">Registrar Asistencia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="asistenciaForm">
+                        <input type="hidden" id="asistenciaId">
+                        <div class="mb-3">
+                            <label for="asistenciaEmpleado" class="form-label">Empleado</label>
+                            <select class="form-select" id="asistenciaEmpleado" required>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="asistenciaFecha" class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="asistenciaFecha" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="asistenciaEntrada" class="form-label">Hora Entrada</label>
+                            <input type="time" class="form-control" id="asistenciaEntrada">
+                        </div>
+                        <div class="mb-3">
+                            <label for="asistenciaSalida" class="form-label">Hora Salida</label>
+                            <input type="time" class="form-control" id="asistenciaSalida">
+                        </div>
+                        <div class="mb-3">
+                            <label for="asistenciaHoras" class="form-label">Horas Trabajadas</label>
+                            <input type="number" class="form-control" id="asistenciaHoras" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="asistenciaSalario" class="form-label">Salario Día</label>
+                            <input type="number" class="form-control" id="asistenciaSalario" value="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="asistenciaEstado" class="form-label">Estado de Asistencia</label>
+                            <select class="form-select" id="asistenciaEstado">
+                                <option value="Presente">Presente</option>
+                                <option value="Ausente">Ausente</option>
+                                <option value="Retardo">Retardo</option>
+                                <option value="Falta Injustificada">Falta Injustificada</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarAsistencia()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Empleado -->
+    <div class="modal fade" id="empleadoModal" tabindex="-1" aria-labelledby="empleadoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="empleadoModalLabel">Nuevo Empleado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="empleadoForm">
+                        <input type="hidden" id="empleadoId">
+                        <div class="mb-3">
+                            <label for="noEmpleado" class="form-label">No. Empleado</label>
+                            <input type="text" class="form-control" id="noEmpleado" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rol" class="form-label">Puesto</label>
+                            <select class="form-select" id="rol">
+                                <option value="admin">Admin</option>
+                                <option value="empleado">Empleado</option>
+                                <option value="cocinero">Cocinero</option>
+                                <option value="limpieza">Limpieza</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="telefono" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="correo" class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="correo" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarEmpleado()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/empleados.js"></script>
     <script src="js/sidebar.js"></script>
 

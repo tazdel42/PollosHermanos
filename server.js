@@ -21,6 +21,7 @@ connectDB();
 app.use('/api/auth', require('./backend/routes/authRoutes'));
 
 app.use('/api/inventory', require('./backend/routes/inventoryRoutes'));
+app.use('/api/employees', require('./backend/routes/employeeRoutes'));
 
 // Levanta el servidor
 const PORT = process.env.PORT || 5000;

@@ -19,6 +19,16 @@ const userSchema = new mongoose.Schema({
     enum: ['admin', 'empleado', 'cocinero', 'limpieza'],
     default: 'empleado'
   },
+  permisos: {
+    type: String,
+    enum: ['Básico', 'Completo'],
+    default: 'Básico'
+  },
+  estado: {
+    type: String,
+    enum: ['Activo', 'Inactivo'],
+    default: 'Activo'
+  },
   idEmpleado: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee'
