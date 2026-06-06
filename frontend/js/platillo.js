@@ -72,3 +72,50 @@ document.getElementById('btnAgregar').addEventListener('click', function(){
     tbody.appendChild(nuevaFila);
 
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modalEditar = new bootstrap.Modal(document.getElementById('modalEditar'));
+    let filaActual = null;
+
+    const tablaPlatillos = document.getElementById('tablaPlatillos');
+
+    tablaPlatillos.addEventListener('click', function(evento) {
+        if (evento.target.classList.contains('btn-warning')) {
+            filaActual = evento.target.closest('tr');
+            const nombre = filaActual.children[1].textContent;
+            const receta = filaActual.children[2].textContent;
+            const precio = filaActual.children[3].textContent;
+            const estado = filaActual.children[4].innerText.trim();
+        
+            document.getElementById('editNombre').value = nombre;
+            document.getElementById('editReceta').value = receta;
+            document.getElementById('editPrecio').value = precio;
+            document.getElementById('editEstado').value = estado;
+            
+            modalEditar.show();
+        }
+
+    });
+
+    document.getElementById('btnGuardarEdicion').addEventListener('click', function() {
+        if (filaActual !== null) {
+            const nuevoNombre = document.getElementById('editNombre').value;
+            const nuevaReceta = document.getElementById('editReceta').value;
+            const nuevoPrecio = document.getElementById('editPrecio').value;
+            const nuevoEstado = document.getElementById('editEstado').value;
+
+            filaActual.children[1].innerText = nuevoNombre;
+            filaActual.children[2].innerText = nuevaReceta;
+            filaActual.children[3].innerText = nuevoPrecio;
+            
+            if (nuevoEstado === 'Disponible') {
+                filaActual.children[4].innerHTML = '<span class="badge bg-success">Disponible</span>';
+            } else {
+                filaActual.children[4].innerHTML = '<span class="badge bg-danger">Agotado</span>';
+            }
+
+            modalEditar.hide();
+        }
+    });
+
+});
