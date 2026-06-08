@@ -1,10 +1,11 @@
 const User = require('../models/User');
+const Employee = require('../models/Employee');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Crea un nuevo usuario en la base de datos
 exports.registerUser = async (req, res) => {
-  const { nombre, email, password, rol } = req.body;
+  const { nombre, email, telefono, password, rol } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -14,14 +15,34 @@ exports.registerUser = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+    
+    const permisosAsignados = rol === 'admin' ? 'Completo' : 'Básico';
 
     user = new User({
       nombre,
       email,
       password: hashedPassword,
-      rol
+      rol,
+      permisos: permisosAsignados
     });
 
+    const count = await Employee.countDocuments();
+    const noEmpleado = `EMP-${String(count + 1).padStart(3, '0')}`;
+
+    const newEmployee = new Employee({
+      noEmpleado,
+      nombre,
+      telefono: telefono || 'Por definir',
+      correo: email,
+      estado: 'Activo',
+      usuario: email,
+      rol,
+      permisos: permisosAsignados
+    });
+    
+    await newEmployee.save();
+
+    user.idEmpleado = newEmployee._id;
     await user.save();
 
     const payload = {

@@ -173,7 +173,7 @@ async function cargarUsuarios() {
 }
 
 function altaUsuario() {
-    alert("Vaya a la sección de Autenticación para crear usuarios.");
+    window.location.href = 'registro.html';
 }
 
 function abrirModalUsuario(user) {

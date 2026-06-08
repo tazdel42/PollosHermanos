@@ -74,10 +74,22 @@ const deleteEmployee = async (req, res) => {
 };
 
 
+const User = require('../models/User');
+
 const getUsers = async (req, res) => {
   try {
-    const employeesAsUsers = await Employee.find({}, 'noEmpleado correo rol permisos estado');
-    res.json(employeesAsUsers);
+    const users = await User.find({}, 'email rol permisos estado').populate('idEmpleado', 'noEmpleado');
+    
+    const usersMapped = users.map(user => ({
+      _id: user._id,
+      correo: user.email,
+      rol: user.rol,
+      permisos: user.permisos,
+      estado: user.estado,
+      noEmpleado: user.idEmpleado ? user.idEmpleado.noEmpleado : 'N/A'
+    }));
+
+    res.json(usersMapped);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener usuarios', error: error.message });
   }
@@ -86,18 +98,23 @@ const getUsers = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { rol, permisos, estado } = req.body;
-    const employee = await Employee.findById(req.params.id);
+    const user = await User.findById(req.params.id);
 
-    if (!employee) {
+    if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    employee.rol = rol || employee.rol;
-    employee.permisos = permisos || employee.permisos;
-    employee.estado = estado || employee.estado;
+    user.rol = rol || user.rol;
+    user.permisos = permisos || user.permisos;
+    user.estado = estado || user.estado;
 
-    const updatedEmployee = await employee.save();
-    res.json(updatedEmployee);
+    const updatedUser = await user.save();
+    
+    if (user.idEmpleado) {
+      await Employee.findByIdAndUpdate(user.idEmpleado, { rol: user.rol, estado: user.estado, permisos: user.permisos });
+    }
+
+    res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: 'Error al actualizar usuario', error: error.message });
   }
@@ -105,11 +122,16 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const employee = await Employee.findById(req.params.id);
-    if (!employee) {
+    const user = await User.findById(req.params.id);
+    if (!user) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
-    await employee.deleteOne();
+    
+    if (user.idEmpleado) {
+      await Employee.findByIdAndDelete(user.idEmpleado);
+    }
+
+    await user.deleteOne();
     res.json({ message: 'Usuario eliminado' });
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar usuario', error: error.message });

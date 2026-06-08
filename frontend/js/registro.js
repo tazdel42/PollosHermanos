@@ -3,6 +3,7 @@ document.getElementById('registroForm').addEventListener('submit', async (e) => 
 
     const nombre = document.getElementById('floatingNombre').value;
     const email = document.getElementById('floatingEmail').value;
+    const telefono = document.getElementById('floatingTelefono').value;
     const password = document.getElementById('floatingPassword').value;
     const rol = document.getElementById('floatingRol').value;
     const alertBox = document.getElementById('alertBox');
@@ -17,7 +18,7 @@ document.getElementById('registroForm').addEventListener('submit', async (e) => 
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ nombre, email, password, rol })
+            body: JSON.stringify({ nombre, email, telefono, password, rol })
         });
 
         const data = await response.json();
