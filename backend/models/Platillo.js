@@ -18,7 +18,19 @@ const platilloSchema = new mongoose.Schema({
         required: true,
         enum: ['Disponible', 'Agotado'],
         default: 'Disponible'
-    }
+    },
+    esMenuDelDia: {
+        type: Boolean,
+        default: false
+    },
+    imagen: {
+        type: String,
+        default: ''
+    },
+    sucursalesAgotado: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Sucursal'
+    }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Platillo', platilloSchema);

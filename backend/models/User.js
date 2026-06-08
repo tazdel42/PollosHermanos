@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema({
   idEmpleado: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Employee'
+  },
+  sucursal: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
   }
 }, {
   timestamps: true

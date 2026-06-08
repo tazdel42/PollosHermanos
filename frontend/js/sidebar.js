@@ -1,3 +1,13 @@
+// Función global para obtener headers de autenticación
+window.getAuthHeaders = function() {
+    const token = localStorage.getItem('token');
+    if (!token) window.location.href = 'login.html';
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    };
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     const btnToggle = document.getElementById('btnToggle');
     const sidebar = document.getElementById('sidebar');
@@ -16,6 +26,35 @@ document.addEventListener('DOMContentLoaded', function () {
     const userEmail = localStorage.getItem('userEmail') || 'Sin correo';
     const userRole = localStorage.getItem('userRole') || 'empleado';
 
+    // Ocultar links de administrador si no es admin
+    if (userRole !== 'admin') {
+        const adminLinks = ['proveedores.html', 'empleados.html', 'sucursales.html', 'finanzas.html', 'reportes.html'];
+        
+        // 1. Ocultar en el Sidebar
+        const linksSidebar = sidebar.querySelectorAll('a');
+        linksSidebar.forEach(link => {
+            const href = link.getAttribute('href');
+            if (adminLinks.includes(href)) {
+                link.style.display = 'none';
+            }
+        });
+
+        // 2. Ocultar tarjetas en el Dashboard (PaginaInicial.html)
+        if (contenido) {
+            const linksCards = contenido.querySelectorAll('a.btn');
+            linksCards.forEach(link => {
+                const href = link.getAttribute('href');
+                if (adminLinks.includes(href)) {
+                    // Ocultar la columna entera que contiene la tarjeta
+                    const col = link.closest('.col-12');
+                    if (col) {
+                        col.style.display = 'none';
+                    }
+                }
+            });
+        }
+    }
+
     const userEmailSpan = document.querySelector('.user-email');
     if (userEmailSpan) {
         userEmailSpan.textContent = userName;
@@ -24,6 +63,19 @@ document.addEventListener('DOMContentLoaded', function () {
         userEmailSpan.style.textDecoration = 'underline';
         userEmailSpan.setAttribute('data-bs-toggle', 'offcanvas');
         userEmailSpan.setAttribute('data-bs-target', '#perfilOffcanvas');
+
+        // Insertar campana de notificaciones junto al perfil
+        const navContainer = document.createElement('div');
+        navContainer.className = 'd-flex align-items-center ms-auto me-3';
+        navContainer.innerHTML = `
+            <div class="position-relative me-3" style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#alertasOffcanvas">
+                <span style="font-size: 1.5rem;">🔔</span>
+                <span id="badgeAlertas" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" style="font-size: 0.65rem;">
+                    0
+                </span>
+            </div>
+        `;
+        userEmailSpan.parentNode.insertBefore(navContainer, userEmailSpan);
     }
 
     // Inyectar el Offcanvas dinámicamente en el body
@@ -49,6 +101,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
         </div>
+        
+        <!-- Offcanvas de Alertas -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="alertasOffcanvas" aria-labelledby="alertasOffcanvasLabel">
+            <div class="offcanvas-header bg-danger text-white">
+                <h5 class="offcanvas-title" id="alertasOffcanvasLabel">Notificaciones</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div id="listaAlertas" class="list-group">
+                    <p class="text-center mt-4">Cargando...</p>
+                </div>
+            </div>
+        </div>
     `;
 
     document.body.insertAdjacentHTML('beforeend', offcanvasHTML);
@@ -56,6 +121,45 @@ document.addEventListener('DOMContentLoaded', function () {
     // Lógica para cerrar sesión
     document.getElementById('btnCerrarSesion').addEventListener('click', () => {
         localStorage.clear();
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
     });
+
+    // Fetch Alertas
+    const cargarAlertas = async () => {
+        try {
+            const res = await fetch('/api/reportes/alertas', { headers: window.getAuthHeaders() });
+            if (!res.ok) return;
+            const alertas = await res.json();
+
+            const badge = document.getElementById('badgeAlertas');
+            const lista = document.getElementById('listaAlertas');
+            
+            if (alertas.length > 0) {
+                badge.textContent = alertas.length;
+                badge.classList.remove('d-none');
+                
+                lista.innerHTML = '';
+                alertas.forEach(alerta => {
+                    lista.innerHTML += `
+                        <div class="list-group-item list-group-item-action border-start border-${alerta.color} border-4 mb-2 shadow-sm rounded">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1 fw-bold text-${alerta.color}">${alerta.tipo}</h6>
+                                <small class="text-muted">${new Date(alerta.fecha).toLocaleDateString()}</small>
+                            </div>
+                            <p class="mb-1 text-sm">${alerta.mensaje}</p>
+                        </div>
+                    `;
+                });
+            } else {
+                badge.classList.add('d-none');
+                lista.innerHTML = '<p class="text-center text-muted mt-4">No hay notificaciones nuevas 🎉</p>';
+            }
+        } catch (error) {
+            console.error('Error cargando alertas:', error);
+        }
+    };
+
+    cargarAlertas();
+    // Actualizar cada 60 segundos
+    setInterval(cargarAlertas, 60000);
 });

@@ -3,7 +3,11 @@ const Inventory = require('../models/Inventory');
 // Obtener todo el inventario
 exports.getInventory = async (req, res) => {
     try {
-        const items = await Inventory.find();
+        const query = {};
+        if (req.user && req.user.rol !== 'admin') {
+            query.sucursal = req.user.sucursal;
+        }
+        const items = await Inventory.find(query);
         res.json(items);
     } catch (err) {
         res.status(500).json({ message: 'Error al obtener inventario' });
@@ -13,8 +17,9 @@ exports.getInventory = async (req, res) => {
 // Agregar un nuevo artículo
 exports.addInventory = async (req, res) => {
     const { nombre, tipo, cantidad } = req.body;
+    const sucursal = (req.user && req.user.rol !== 'admin') ? req.user.sucursal : req.body.sucursal;
     try {
-        const newItem = new Inventory({ nombre, tipo, cantidad });
+        const newItem = new Inventory({ nombre, tipo, cantidad, sucursal });
         await newItem.save();
         res.status(201).json(newItem);
     } catch (err) {
@@ -27,9 +32,9 @@ exports.updateQuantity = async (req, res) => {
     const { cantidad } = req.body;
     try {
         const updatedItem = await Inventory.findByIdAndUpdate(
-            req.params.id, 
-            { cantidad }, 
-            { new: true }
+            req.params.id,
+            { cantidad },
+            { returnDocument: 'after' }
         );
         res.json(updatedItem);
     } catch (err) {

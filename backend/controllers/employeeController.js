@@ -1,9 +1,14 @@
 const Employee = require('../models/Employee');
+const { logAction } = require('../utils/logger');
 
 
 const getEmployees = async (req, res) => {
   try {
-    const employees = await Employee.find();
+    const query = {};
+    if (req.user && req.user.rol !== 'admin') {
+      query.sucursal = req.user.sucursal;
+    }
+    const employees = await Employee.find(query).populate('sucursal', 'nombre');
     res.json(employees);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener los empleados', error: error.message });
@@ -13,6 +18,7 @@ const getEmployees = async (req, res) => {
 const createEmployee = async (req, res) => {
   try {
     const { noEmpleado, nombre, rol, telefono, correo, estado } = req.body;
+    const sucursal = (req.user && req.user.rol !== 'admin') ? req.user.sucursal : req.body.sucursal;
 
     const employeeExists = await Employee.findOne({ $or: [{ noEmpleado }, { correo }] });
     if (employeeExists) {
@@ -26,8 +32,11 @@ const createEmployee = async (req, res) => {
       telefono,
       correo,
       estado,
+      sucursal,
       usuario: correo
     });
+
+    await logAction(req, 'Crear', 'Empleados', `Alta de empleado ${nombre} (${noEmpleado})`);
 
     res.status(201).json(employee);
   } catch (error) {
@@ -37,7 +46,7 @@ const createEmployee = async (req, res) => {
 
 const updateEmployee = async (req, res) => {
   try {
-    const { noEmpleado, nombre, rol, telefono, correo, estado } = req.body;
+    const { noEmpleado, nombre, rol, telefono, correo, estado, sucursal } = req.body;
     const employee = await Employee.findById(req.params.id);
 
     if (!employee) {
@@ -50,8 +59,15 @@ const updateEmployee = async (req, res) => {
     employee.telefono = telefono || employee.telefono;
     employee.correo = correo || employee.correo;
     employee.estado = estado || employee.estado;
+    
+    if (req.user && req.user.rol === 'admin') {
+      employee.sucursal = sucursal ? sucursal : null;
+    }
 
     const updatedEmployee = await employee.save();
+
+    await logAction(req, 'Actualizar', 'Empleados', `Modificación del empleado ${updatedEmployee.nombre} (${updatedEmployee.noEmpleado})`);
+
     res.json(updatedEmployee);
   } catch (error) {
     res.status(500).json({ message: 'Error al actualizar el empleado', error: error.message });
@@ -67,6 +83,9 @@ const deleteEmployee = async (req, res) => {
     }
 
     await employee.deleteOne();
+
+    await logAction(req, 'Eliminar', 'Empleados', `Baja del empleado ${employee.nombre} (${employee.noEmpleado})`);
+
     res.json({ message: 'Empleado eliminado' });
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar el empleado', error: error.message });
@@ -78,7 +97,11 @@ const User = require('../models/User');
 
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find({}, 'email rol permisos estado').populate('idEmpleado', 'noEmpleado');
+    const query = {};
+    if (req.user && req.user.rol !== 'admin') {
+      query.sucursal = req.user.sucursal;
+    }
+    const users = await User.find(query, 'email rol permisos estado').populate('idEmpleado', 'noEmpleado');
     
     const usersMapped = users.map(user => ({
       _id: user._id,
@@ -132,6 +155,9 @@ const deleteUser = async (req, res) => {
     }
 
     await user.deleteOne();
+
+    await logAction(req, 'Eliminar', 'Usuarios', `Usuario ${user.email} eliminado`);
+
     res.json({ message: 'Usuario eliminado' });
   } catch (error) {
     res.status(500).json({ message: 'Error al eliminar usuario', error: error.message });
@@ -141,7 +167,16 @@ const deleteUser = async (req, res) => {
 
 const getAttendances = async (req, res) => {
   try {
-    const employees = await Employee.find({}, 'noEmpleado nombre asistencias');
+    const query = {};
+    if (req.user && req.user.rol !== 'admin') {
+      // Un empleado solo debe ver sus propias asistencias
+      if (req.user.idEmpleado) {
+        query._id = req.user.idEmpleado;
+      } else {
+        query.correo = req.user.email;
+      }
+    }
+    const employees = await Employee.find(query, 'noEmpleado nombre asistencias');
     
     let allAttendances = [];
     employees.forEach(emp => {
@@ -161,7 +196,23 @@ const getAttendances = async (req, res) => {
 
 const createAttendance = async (req, res) => {
   try {
-    const { idEmpleado, fecha, horaEntrada, horaSalida, horasTrabajadas, bonoDiario, laborDia, estadoAsistencia } = req.body;
+    const { fecha, horaEntrada, horaSalida, horasTrabajadas, bonoDiario, laborDia, estadoAsistencia } = req.body;
+    let { idEmpleado } = req.body;
+
+    if (req.user && req.user.rol !== 'admin') {
+      // Si no es admin, forzar que el idEmpleado sea el suyo propio
+      if (req.user.idEmpleado) {
+        idEmpleado = req.user.idEmpleado;
+      } else {
+        // Buscar empleado por correo
+        const emp = await Employee.findOne({ correo: req.user.email });
+        if (emp) {
+            idEmpleado = emp._id;
+        } else {
+            return res.status(403).json({ message: 'No se encontró tu perfil de empleado vinculado a tu usuario.' });
+        }
+      }
+    }
 
     const employee = await Employee.findById(idEmpleado);
     if (!employee) {

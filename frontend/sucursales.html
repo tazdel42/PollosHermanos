@@ -4,27 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Menú</title>
+    <title>Gestión de Sucursales</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/sucursales.css">
 </head>
 
 <body>
 
     <div class="Barrasuperior d-flex align-items-center justify-content-between px-3">
         <button id="btnToggle" class="btn btn-light me-2">☰</button>
-        <h1 class="text-start fs-4 m-0 flex-grow-1">Gestión de menú</h1>
+        <h1 class="text-start fs-4 m-0 flex-grow-1">Gestión de Sucursales</h1>
         <span class="user-email">usuario_prueba@correo.com</span>
     </div>
 
     <div id="sidebar" class="sidebar">
         <a href="PaginaInicial.html">Inicio</a>
-        <a href="menu.html" style="background-color: #3b3b98; color: white;">Menú Diario</a>
+        <a href="menu.html">Menú Diario</a>
         <a href="proveedores.html">Proveedores</a>
         <a href="empleados.html">Empleados</a>
         <a href="inventario.html">Inventario</a>
-        <a href="sucursales.html">Sucursales</a>
+        <a href="sucursales.html" style="background-color: #3b3b98; color: white;">Sucursales</a>
         <a href="pedidos.html">Pedidos</a>
         <a href="finanzas.html">Finanzas</a>
         <a href="reportes.html">Reportes</a>
@@ -36,16 +36,16 @@
         <div class="container-fluid">
 
             <div class="d-flex justify-content-between align-items-center mb-4 mt-4">
-                <h2>Platillos del Día</h2>
+                <h2>Lista de Sucursales</h2>
 
                 <button id="btnAgregar" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalAgregar">
-                    + Agregar Platillo
+                    + Agregar Sucursal
                 </button>
             </div>
 
             <div class="card shadow-sm">
                 <div class="card-header">
-                    Menú Actual
+                    Sucursales Activas e Inactivas
                 </div>
 
                 <div class="card-body">
@@ -54,17 +54,15 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Platillo</th>
-                                <th>Receta</th>
-                                <th>Precio</th>
-                                <th>Estado (Global)</th>
-                                <th>Agotado en Sucursal</th>
-                                <th>Menú del Día</th>
+                                <th>Nombre</th>
+                                <th>Dirección</th>
+                                <th>Teléfono</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
 
-                        <tbody id="tablaPlatillos">
+                        <tbody id="tablaSucursales">
                         </tbody>
 
                     </table>
@@ -78,42 +76,36 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header" style="background-color: #198754; color: white;">
-                        <h5 class="modal-title" id="modalAgregarLabel">Nuevo Platillo</h5>
+                        <h5 class="modal-title" id="modalAgregarLabel">Nueva Sucursal</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
                             aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
                         <form id="formAgregar">
                             <div class="mb-3">
-                                <label for="addNombre" class="form-label">Nombre del Platillo</label>
-                                <input type="text" class="form-control" id="addNombre" placeholder="Ej. Pollo Frito"
-                                    required>
+                                <label for="addNombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="addNombre" placeholder="Ej. Sucursal Centro" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addReceta" class="form-label">Receta / Descripción</label>
-                                <input type="text" class="form-control" id="addReceta"
-                                    placeholder="Breve descripción..." required>
+                                <label for="addDireccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="addDireccion" placeholder="Dirección completa" required>
                             </div>
                             <div class="mb-3">
-                                <label for="addPrecio" class="form-label">Precio ($)</label>
-                                <input type="number" class="form-control" id="addPrecio" placeholder="0.00" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="addImagen" class="form-label">Subir Imagen (Opcional)</label>
-                                <input type="file" class="form-control" id="addImagen" accept="image/*">
+                                <label for="addTelefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="addTelefono" required>
                             </div>
                             <div class="mb-3">
                                 <label for="addEstado" class="form-label">Estado Inicial</label>
                                 <select class="form-select" id="addEstado">
-                                    <option value="Disponible">Disponible</option>
-                                    <option value="Agotado">Agotado</option>
+                                    <option value="Activa">Activa</option>
+                                    <option value="Inactiva">Inactiva</option>
                                 </select>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-success" id="btnGuardarNuevo">Guardar Platillo</button>
+                        <button type="button" class="btn btn-success" id="btnGuardarNuevo">Guardar Sucursal</button>
                     </div>
                 </div>
             </div>
@@ -123,33 +115,28 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditarLabel">Editar Platillo</h5>
+                        <h5 class="modal-title" id="modalEditarLabel">Editar Sucursal</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <div class="modal-body">
                         <form id="formEditar">
                             <div class="mb-3">
-                                <label for="editNombre" class="form-label">Platillo</label>
+                                <label for="editNombre" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="editNombre" required>
                             </div>
                             <div class="mb-3">
-                                <label for="editReceta" class="form-label">Receta</label>
-                                <input type="text" class="form-control" id="editReceta" required>
+                                <label for="editDireccion" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="editDireccion" required>
                             </div>
                             <div class="mb-3">
-                                <label for="editPrecio" class="form-label">Precio</label>
-                                <input type="text" class="form-control" id="editPrecio" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editImagen" class="form-label">Subir Nueva Imagen (Opcional)</label>
-                                <input type="file" class="form-control" id="editImagen" accept="image/*">
-                                <small class="text-muted">Si no seleccionas ninguna, se mantendrá la actual.</small>
+                                <label for="editTelefono" class="form-label">Teléfono</label>
+                                <input type="text" class="form-control" id="editTelefono" required>
                             </div>
                             <div class="mb-3">
                                 <label for="editEstado" class="form-label">Estado</label>
                                 <select class="form-select" id="editEstado">
-                                    <option value="Disponible">Disponible</option>
-                                    <option value="Agotado">Agotado</option>
+                                    <option value="Activa">Activa</option>
+                                    <option value="Inactiva">Inactiva</option>
                                 </select>
                             </div>
                         </form>
@@ -162,31 +149,9 @@
             </div>
         </div>
 
-        <div class="modal fade" id="modalAgotarAdmin" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-warning">
-                        <h5 class="modal-title">Seleccionar Sucursal</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Como Administrador, debes elegir en qué sucursal deseas marcar como agotado/disponible este platillo:</p>
-                        <select class="form-select" id="adminSucursalAgotarSelect">
-                            <option value="">Cargando sucursales...</option>
-                        </select>
-                        <input type="hidden" id="platilloIdAgotar">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="btnConfirmarAgotar">Confirmar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
     <script src="js/sidebar.js"></script>
-    <script src="js/platillo.js"></script>
+    <script src="js/sucursal.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

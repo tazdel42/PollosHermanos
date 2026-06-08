@@ -13,30 +13,31 @@ const {
   updateAttendance,
   deleteAttendance
 } = require('../controllers/employeeController');
+const { protect, protectAdmin } = require('../middleware/authMiddleware');
 
 router.route('/')
-  .get(getEmployees)
-  .post(createEmployee);
+  .get(protectAdmin, getEmployees)
+  .post(protectAdmin, createEmployee);
 
 router.route('/:id')
-  .put(updateEmployee)
-  .delete(deleteEmployee);
+  .put(protectAdmin, updateEmployee)
+  .delete(protectAdmin, deleteEmployee);
 
 // Usuarios
 router.route('/users/list')
-  .get(getUsers);
+  .get(protect, getUsers);
 
 router.route('/users/:id')
-  .put(updateUser)
-  .delete(deleteUser);
+  .put(protect, updateUser)
+  .delete(protect, deleteUser);
 
 // Asistencias
 router.route('/attendances/list')
-  .get(getAttendances)
-  .post(createAttendance);
+  .get(protect, getAttendances)
+  .post(protect, createAttendance);
 
 router.route('/attendances/:id')
-  .put(updateAttendance)
-  .delete(deleteAttendance);
+  .put(protectAdmin, updateAttendance)
+  .delete(protectAdmin, deleteAttendance);
 
 module.exports = router;

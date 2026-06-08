@@ -14,6 +14,10 @@ const inventorySchema = new mongoose.Schema({
         type: Number, 
         required: true, 
         default: 0 
+    },
+    sucursal: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Sucursal'
     }
 }, { timestamps: true });
 

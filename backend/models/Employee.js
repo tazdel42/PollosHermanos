@@ -24,7 +24,10 @@ const employeeSchema = new mongoose.Schema({
     enum: ['Activo', 'Inactivo'],
     default: 'Activo'
   },
-
+  sucursal: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Sucursal'
+  },
 
   usuario: {
     type: String

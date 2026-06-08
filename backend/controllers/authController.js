@@ -95,7 +95,7 @@ exports.loginUser = async (req, res) => {
       { expiresIn: '1d' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token, rol: user.rol, nombre: user.nombre, email: user.email });
+        res.json({ token, rol: user.rol, nombre: user.nombre, email: user.email, sucursal: user.sucursal });
       }
     );
   } catch (err) {

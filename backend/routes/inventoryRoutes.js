@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const inventoryController = require('../controllers/inventoryController');
+const { getInventory, addInventory, updateQuantity, deleteInventory } = require('../controllers/inventoryController');
+const { protect, protectAdmin } = require('../middleware/authMiddleware');
 
-router.get('/', inventoryController.getInventory);
-router.post('/', inventoryController.addInventory);
-router.put('/:id', inventoryController.updateQuantity);
-router.delete('/:id', inventoryController.deleteInventory);
+// Rutas de Inventario
+router.get('/', protect, getInventory);
+router.post('/', protectAdmin, addInventory);
+router.put('/:id', protect, updateQuantity);
+router.delete('/:id', protectAdmin, deleteInventory);
 
 module.exports = router;

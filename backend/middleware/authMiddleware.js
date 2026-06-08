@@ -28,4 +28,53 @@ const protectAdminCompleto = async (req, res, next) => {
     }
 };
 
-module.exports = { protectAdminCompleto };
+const protectAdmin = async (req, res, next) => {
+    let token;
+    
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            
+            req.user = await User.findById(decoded.user.id).select('-password');
+
+            if (req.user && req.user.rol === 'admin') {
+                next();
+            } else {
+                res.status(403).json({ message: 'Acceso denegado. Se requiere rol "admin".' });
+            }
+        } catch (error) {
+            res.status(401).json({ message: 'No autorizado, token falló o expiró.' });
+        }
+    }
+
+    if (!token) {
+        res.status(401).json({ message: 'No autorizado, no se proporcionó token.' });
+    }
+};
+
+const protect = async (req, res, next) => {
+    let token;
+    
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            
+            req.user = await User.findById(decoded.user.id).select('-password');
+            if (req.user) {
+                next();
+            } else {
+                res.status(401).json({ message: 'No autorizado, usuario no encontrado.' });
+            }
+        } catch (error) {
+            res.status(401).json({ message: 'No autorizado, token falló o expiró.' });
+        }
+    }
+
+    if (!token) {
+        res.status(401).json({ message: 'No autorizado, no se proporcionó token.' });
+    }
+};
+
+module.exports = { protectAdminCompleto, protectAdmin, protect };

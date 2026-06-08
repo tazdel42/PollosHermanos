@@ -21,11 +21,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         const data = await response.json();
 
         if (response.ok) {
-            // Guarda el token en localStorage
             localStorage.setItem('token', data.token);
             localStorage.setItem('userRole', data.rol);
             localStorage.setItem('userName', data.nombre);
             localStorage.setItem('userEmail', data.email);
+            if (data.sucursal) localStorage.setItem('userSucursal', data.sucursal);
 
             // Esto es el mensaje de éxito
             alertBox.classList.remove('d-none', 'alert-danger');

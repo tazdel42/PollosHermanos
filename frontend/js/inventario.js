@@ -5,6 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const formInventario = document.getElementById('formInventario');
     const tablaInventario = document.getElementById('tablaInventario');
     
+    const userRole = localStorage.getItem('userRole') || 'empleado';
+    const btnAgregar = document.getElementById('btnAgregar');
+    if (btnAgregar && userRole !== 'admin') {
+        btnAgregar.style.display = 'none';
+    }
+
     // Un contador simple para simular un ID de base de datos
     let contadorId = 1; 
 
@@ -31,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>${cantidad}</td>
             <td>
                 <button class="btn btn-sm btn-outline-primary me-1">Editar</button>
-                <button class="btn btn-sm btn-outline-danger" onclick="this.closest('tr').remove()">Eliminar</button>
+                ${userRole === 'admin' ? `<button class="btn btn-sm btn-outline-danger" onclick="this.closest('tr').remove()">Eliminar</button>` : ''}
             </td>
         `;
 
