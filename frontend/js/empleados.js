@@ -231,16 +231,19 @@ async function cargarAsistencias() {
             const empNombre = asis.idEmpleado ? asis.idEmpleado.nombre : 'Desconocido';
             let badgeClass = 'bg-success';
             if (asis.estadoAsistencia === 'Ausente' || asis.estadoAsistencia === 'Falta Injustificada') badgeClass = 'bg-danger';
-            if (asis.estadoAsistencia === 'Retardo') badgeClass = 'bg-warning text-dark';
+            let badgeColor = 'success';
+            if (asis.estadoAsistencia === 'Ausente' || asis.estadoAsistencia === 'Falta Injustificada') badgeColor = 'danger';
+            if (asis.estadoAsistencia === 'Retardo') badgeColor = 'warning';
 
             tr.innerHTML = `
                 <td>${empNombre}</td>
                 <td>${asis.fecha}</td>
-                <td>${asis.horaEntrada || '-'}</td>
-                <td>${asis.horaSalida || '-'}</td>
+                <td>${asis.horaEntrada || '--:--'}</td>
+                <td>${asis.horaSalida || '--:--'}</td>
                 <td>${asis.horasTrabajadas || 0}</td>
-                <td>$${asis.salarioDia || 0}</td>
-                <td><span class="badge ${badgeClass}">${asis.estadoAsistencia || 'Presente'}</span></td>
+                <td>$${asis.bonoDiario || 0}</td>
+                <td>${asis.laborDia || ''}</td>
+                <td><span class="badge bg-${badgeColor}">${asis.estadoAsistencia || 'Presente'}</span></td>
                 <td>
                     <button class="btn btn-primary btn-sm" onclick='abrirModalAsistencia(${JSON.stringify(asis)})'>Modificar</button>
                     <button class="btn btn-danger btn-sm" onclick="eliminarAsistencia('${asis._id}')">Borrar</button>
@@ -268,7 +271,8 @@ function abrirModalAsistencia(asis) {
     document.getElementById('asistenciaEntrada').value = asis.horaEntrada;
     document.getElementById('asistenciaSalida').value = asis.horaSalida;
     document.getElementById('asistenciaHoras').value = asis.horasTrabajadas;
-    document.getElementById('asistenciaSalario').value = asis.salarioDia;
+    document.getElementById('asistenciaBono').value = asis.bonoDiario;
+    document.getElementById('asistenciaLabor').value = asis.laborDia;
     document.getElementById('asistenciaEstado').value = asis.estadoAsistencia;
 
     document.getElementById('asistenciaModalLabel').innerText = 'Modificar Asistencia';
@@ -281,11 +285,12 @@ async function guardarAsistencia() {
     const fecha = document.getElementById('asistenciaFecha').value;
     const horaEntrada = document.getElementById('asistenciaEntrada').value;
     const horaSalida = document.getElementById('asistenciaSalida').value;
-    const horasTrabajadas = document.getElementById('asistenciaHoras').value;
-    const salarioDia = document.getElementById('asistenciaSalario').value;
+    const horasTrabajadas = parseFloat(document.getElementById('asistenciaHoras').value) || 0;
+    const bonoDiario = parseFloat(document.getElementById('asistenciaBono').value) || 0;
+    const laborDia = document.getElementById('asistenciaLabor').value;
     const estadoAsistencia = document.getElementById('asistenciaEstado').value;
 
-    const payload = { idEmpleado, fecha, horaEntrada, horaSalida, horasTrabajadas, salarioDia, estadoAsistencia };
+    const payload = { idEmpleado, fecha, horaEntrada, horaSalida, horasTrabajadas, bonoDiario, laborDia, estadoAsistencia };
 
     try {
         let res;

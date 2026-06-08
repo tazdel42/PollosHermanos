@@ -46,7 +46,8 @@ const employeeSchema = new mongoose.Schema({
     horaEntrada: String,
     horaSalida: String,
     horasTrabajadas: Number,
-    salarioDia: Number,
+    bonoDiario: Number,
+    laborDia: String,
     estadoAsistencia: {
       type: String,
       enum: ['Presente', 'Ausente', 'Retardo', 'Falta Injustificada'],

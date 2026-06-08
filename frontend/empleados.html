@@ -22,7 +22,7 @@
     <div id="sidebar" class="sidebar">
         <a href="PaginaInicial.html">Inicio</a>
         <a href="menu.html">Menú Diario</a>
-        <a href="#">Proveedores</a>
+        <a href="proveedores.html">Proveedores</a>
         <a href="empleados.html" style="background-color: #3b3b98; color: white;">Empleados</a>
         <a href="inventario.html">Inventario</a>
     </div>
@@ -115,8 +115,9 @@
                             <th>Entrada</th>
                             <th>Salida</th>
                             <th>Horas</th>
-                            <th>Salario</th>
-                            <th>Asistencia</th>
+                            <th>Bono Diario</th>
+                            <th>Labor del Día</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
 
@@ -206,11 +207,15 @@
                         </div>
                         <div class="mb-3">
                             <label for="asistenciaHoras" class="form-label">Horas Trabajadas</label>
-                            <input type="number" class="form-control" id="asistenciaHoras" value="0">
+                            <input type="number" class="form-control" id="asistenciaHoras" step="0.5">
                         </div>
                         <div class="mb-3">
-                            <label for="asistenciaSalario" class="form-label">Salario Día</label>
-                            <input type="number" class="form-control" id="asistenciaSalario" value="0">
+                            <label for="asistenciaBono" class="form-label">Bono Diario ($)</label>
+                            <input type="number" class="form-control" id="asistenciaBono" step="0.01">
+                        </div>
+                        <div class="mb-3">
+                            <label for="asistenciaLabor" class="form-label">Labor del Día</label>
+                            <input type="text" class="form-control" id="asistenciaLabor">
                         </div>
                         <div class="mb-3">
                             <label for="asistenciaEstado" class="form-label">Estado de Asistencia</label>

@@ -161,7 +161,7 @@ const getAttendances = async (req, res) => {
 
 const createAttendance = async (req, res) => {
   try {
-    const { idEmpleado, fecha, horaEntrada, horaSalida, horasTrabajadas, salarioDia, estadoAsistencia } = req.body;
+    const { idEmpleado, fecha, horaEntrada, horaSalida, horasTrabajadas, bonoDiario, laborDia, estadoAsistencia } = req.body;
 
     const employee = await Employee.findById(idEmpleado);
     if (!employee) {
@@ -173,7 +173,8 @@ const createAttendance = async (req, res) => {
       horaEntrada,
       horaSalida,
       horasTrabajadas,
-      salarioDia,
+      bonoDiario,
+      laborDia,
       estadoAsistencia
     };
 
@@ -188,7 +189,7 @@ const createAttendance = async (req, res) => {
 
 const updateAttendance = async (req, res) => {
   try {
-    const { horaEntrada, horaSalida, horasTrabajadas, salarioDia, estadoAsistencia } = req.body;
+    const { horaEntrada, horaSalida, horasTrabajadas, bonoDiario, laborDia, estadoAsistencia } = req.body;
     const asistenciaId = req.params.id;
 
     const employee = await Employee.findOne({ 'asistencias._id': asistenciaId });
@@ -200,7 +201,8 @@ const updateAttendance = async (req, res) => {
     if (horaEntrada !== undefined) asistencia.horaEntrada = horaEntrada;
     if (horaSalida !== undefined) asistencia.horaSalida = horaSalida;
     if (horasTrabajadas !== undefined) asistencia.horasTrabajadas = horasTrabajadas;
-    if (salarioDia !== undefined) asistencia.salarioDia = salarioDia;
+    if (bonoDiario !== undefined) asistencia.bonoDiario = bonoDiario;
+    if (laborDia !== undefined) asistencia.laborDia = laborDia;
     if (estadoAsistencia !== undefined) asistencia.estadoAsistencia = estadoAsistencia;
 
     await employee.save();
