@@ -25,6 +25,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userRole', data.rol);
             localStorage.setItem('userName', data.nombre);
+            localStorage.setItem('userEmail', data.email);
 
             // Esto es el mensaje de éxito
             alertBox.classList.remove('d-none', 'alert-danger');
