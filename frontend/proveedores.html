@@ -42,7 +42,8 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre del Proveedor</th>
-                                <th>Descripción / Insumos</th>
+                                <th>Folio/s (Insumos)</th>
+                                <th>Descripción</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -68,14 +69,50 @@
                             <input type="text" class="form-control" id="nombreProveedor" required>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Folio/s de Productos</label>
+                            <input type="text" class="form-control" id="foliosProveedor" placeholder="Ej. #001, #005" required>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Descripción de Insumos</label>
-                            <textarea class="form-control" id="descProveedor" rows="3" required></textarea>
+                            <textarea class="form-control" id="descProveedor" rows="2" required></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-success" onclick="agregarProveedor()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEditarProveedor" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #ffc107; color: #dc3545;">
+                    <h5 class="modal-title fw-bold">Editar Proveedor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarProveedor">
+                        <input type="hidden" id="editIdProveedor">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre del Proveedor</label>
+                            <input type="text" class="form-control" id="editNombreProveedor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Folio/s de Productos</label>
+                            <input type="text" class="form-control" id="editFoliosProveedor" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción de Insumos</label>
+                            <textarea class="form-control" id="editDescProveedor" rows="2" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarEdicionProveedor()">Guardar Cambios</button>
                 </div>
             </div>
         </div>

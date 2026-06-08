@@ -13,11 +13,32 @@ exports.getProveedores = async (req, res) => {
 // Crear un proveedor
 exports.createProveedor = async (req, res) => {
     try {
-        const { nombre, descripcion } = req.body;
-        const nuevoProveedor = await Proveedor.create({ nombre, descripcion });
+        const { nombre, descripcion, folios } = req.body;
+        const nuevoProveedor = await Proveedor.create({ nombre, descripcion, folios });
         res.status(201).json(nuevoProveedor);
     } catch (error) {
         res.status(500).json({ message: 'Error al agregar proveedor', error: error.message });
+    }
+};
+
+// Actualizar un proveedor
+exports.updateProveedor = async (req, res) => {
+    try {
+        const { nombre, descripcion, folios } = req.body;
+        const proveedor = await Proveedor.findById(req.params.id);
+
+        if (!proveedor) {
+            return res.status(404).json({ message: 'Proveedor no encontrado' });
+        }
+
+        proveedor.nombre = nombre || proveedor.nombre;
+        proveedor.descripcion = descripcion || proveedor.descripcion;
+        proveedor.folios = folios || proveedor.folios;
+
+        const proveedorActualizado = await proveedor.save();
+        res.json(proveedorActualizado);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al actualizar proveedor', error: error.message });
     }
 };
 

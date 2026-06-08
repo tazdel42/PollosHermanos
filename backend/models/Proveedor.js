@@ -8,6 +8,11 @@ const proveedorSchema = new mongoose.Schema({
     descripcion: { 
         type: String, 
         required: true 
+    },
+    folios: {
+        type: String,
+        required: true,
+        default: "N/A"
     }
 }, { timestamps: true });
 

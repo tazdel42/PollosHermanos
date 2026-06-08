@@ -41,11 +41,15 @@ async function cargarProveedores() {
 
         proveedores.forEach(prov => {
             const tr = document.createElement('tr');
+            // Agregamos la columna folios y el botón Editar
             tr.innerHTML = `
-                <td>${prov._id.slice(-5).toUpperCase()}</td> <td><strong>${prov.nombre}</strong></td>
+                <td>${prov._id.slice(-5).toUpperCase()}</td>
+                <td><strong>${prov.nombre}</strong></td>
+                <td><span class="badge bg-secondary">${prov.folios || 'N/A'}</span></td>
                 <td>${prov.descripcion}</td>
                 <td>
-                    <button class="btn btn-sm btn-outline-danger" onclick="eliminarProveedor('${prov._id}')">Eliminar</button>
+                    <button class="btn btn-sm btn-warning me-1" onclick='abrirModalEditar(${JSON.stringify(prov)})'>Editar</button>
+                    <button class="btn btn-sm btn-danger" onclick="eliminarProveedor('${prov._id}')">Eliminar</button>
                 </td>
             `;
             tabla.appendChild(tr);
@@ -58,9 +62,10 @@ async function cargarProveedores() {
 // POST - Agregar Proveedor
 async function agregarProveedor() {
     const nombre = document.getElementById('nombreProveedor').value.trim();
+    const folios = document.getElementById('foliosProveedor').value.trim();
     const descripcion = document.getElementById('descProveedor').value.trim();
 
-    if (!nombre || !descripcion) {
+    if (!nombre || !descripcion || !folios) {
         alert("Llena todos los campos.");
         return;
     }
@@ -69,7 +74,7 @@ async function agregarProveedor() {
         const res = await fetch('/api/proveedores', {
             method: 'POST',
             headers: getAuthHeaders(),
-            body: JSON.stringify({ nombre, descripcion })
+            body: JSON.stringify({ nombre, descripcion, folios })
         });
 
         if (manejarErrorPermisos(res)) return;
@@ -86,6 +91,53 @@ async function agregarProveedor() {
         }
     } catch (error) {
         console.error("Error al agregar proveedor: ", error);
+    }
+}
+
+// ABRIR MODAL EDITAR - Cargar datos existentes en el form
+function abrirModalEditar(prov) {
+    document.getElementById('editIdProveedor').value = prov._id;
+    document.getElementById('editNombreProveedor').value = prov.nombre;
+    document.getElementById('editFoliosProveedor').value = prov.folios || '';
+    document.getElementById('editDescProveedor').value = prov.descripcion;
+
+    const modalElement = document.getElementById('modalEditarProveedor');
+    const modalInstance = new bootstrap.Modal(modalElement);
+    modalInstance.show();
+}
+
+// PUT - Guardar Edición
+async function guardarEdicionProveedor() {
+    const id = document.getElementById('editIdProveedor').value;
+    const nombre = document.getElementById('editNombreProveedor').value.trim();
+    const folios = document.getElementById('editFoliosProveedor').value.trim();
+    const descripcion = document.getElementById('editDescProveedor').value.trim();
+
+    if (!nombre || !descripcion || !folios) {
+        alert("Todos los campos son obligatorios.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`/api/proveedores/${id}`, {
+            method: 'PUT',
+            headers: getAuthHeaders(),
+            body: JSON.stringify({ nombre, descripcion, folios })
+        });
+
+        if (manejarErrorPermisos(res)) return;
+
+        if (res.ok) {
+            const modalElement = document.getElementById('modalEditarProveedor');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            modalInstance.hide();
+            cargarProveedores(); // Refrescamos la tabla
+        } else {
+            const err = await res.json();
+            alert("Error al actualizar: " + err.message);
+        }
+    } catch (error) {
+        console.error("Error al editar proveedor: ", error);
     }
 }
 
