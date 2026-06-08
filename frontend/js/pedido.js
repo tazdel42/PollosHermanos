@@ -52,7 +52,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Función para cargar los pedidos
     const cargarPedidos = async () => {
         try {
-            const respuesta = await fetch(API_URL_PEDIDOS);
+            const respuesta = await fetch(API_URL_PEDIDOS, {
+                method: 'GET',
+                headers: getAuthHeaders()
+            });
             const pedidos = await respuesta.json();
 
             tablaPedidos.innerHTML = '';
@@ -102,9 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const respuesta = await fetch(API_URL_PEDIDOS, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify({ proveedor, descripcionProductos, total, estado })
                 });
 
@@ -138,7 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
                 try {
                     const respuesta = await fetch(`${API_URL_PEDIDOS}/${idEliminar}`, {
-                        method: 'DELETE'
+                        method: 'DELETE',
+                        headers: getAuthHeaders()
                     });
 
                     if (respuesta.ok) {
@@ -161,9 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const respuesta = await fetch(`${API_URL_PEDIDOS}/${idEnEdicion}`, {
                         method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
+                        headers: getAuthHeaders(),
                         body: JSON.stringify({ estado })
                     });
 
