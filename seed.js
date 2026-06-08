@@ -26,7 +26,8 @@ const seedAdminUser = async () => {
       nombre: 'Gustavo Fring',
       email: 'admin@polloshermanos.com',
       password: hashedPassword,
-      rol: 'admin'
+      rol: 'admin',
+      permisos: 'Completo'
     });
 
     await adminUser.save();

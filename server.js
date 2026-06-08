@@ -23,6 +23,8 @@ app.use('/api/auth', require('./backend/routes/authRoutes'));
 app.use('/api/inventory', require('./backend/routes/inventoryRoutes'));
 app.use('/api/employees', require('./backend/routes/employeeRoutes'));
 
+app.use('/api/proveedores', require('./backend/routes/proveedorRoutes'));
+
 // Levanta el servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
