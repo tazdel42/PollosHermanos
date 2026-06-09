@@ -130,9 +130,14 @@ Frontend estático y API desacoplada para interoperabilidad
 **Entidad relación**
 ![Entidad-Relación](Imagenes/Entidad-Relacion.jpeg)
 
-# Interfaz Figma
+# 8 Interfaz Figma
 **Pagina Inicial**
 ![Login](Imagenes/PaginaInicial.jpeg)
 
 **Pagina de Recuperación**
 ![Recuperar contraseña](Imagenes/Registro.jpeg)
+
+# Pagina de muestra
+
+**Este es el link de la pagina web de pollos hermanos** 
+- [**Link de la pagina**](https://ideal-trout-r4w7j5vwp69jcvwr-5000.app.github.dev/)
