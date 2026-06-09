@@ -126,9 +126,53 @@ Frontend estático y API desacoplada para interoperabilidad
 **Caso de uso Login**
 ![Diagrama de caso de uso Login](Imagenes/DescripcionLogin.png)
 
-# 7 Diagrama Entidad-Relación
-**Entidad relación**
-![Entidad-Relación](Imagenes/Entidad-Relacion.jpeg)
+# 7 Diagrama Entidad-Relación Y Diagrama de Clase
+**Diagrama de Entidad relación**
+   ![Entidad-Relación](Imagenes/Entidad-Relaciones.png)
+
+**Descripción de las Entidades y Relaciones**
+**User (Usuario):**
+* Atributos: Credenciales de acceso, rol asignado, permisos de seguridad y estado de la cuenta.
+* Relaciones: Employee (asociación 1:1), Sucursal (asociación 1:N), AuditLog (asociación 1:N).
+
+**Employee (Empleado):**
+* Atributos: Información laboral y personal del trabajador, número único de empleado.
+* Relaciones: User (asociación 1:1), Sucursal (asociación 1:N), Asistencia (composición 1:N).
+
+**Asistencia (Subdocumento/Entidad Débil):**
+* Atributos: Registro de horas de entrada, salida, bono diario y estado de asistencia por día.
+* Relaciones: Employee (composición 1:1).
+
+**Sucursal:**
+* Atributos: Datos de contacto y ubicación física del establecimiento.
+* Relaciones: Employee (asociación 1:N), User (asociación 1:N), Inventory (asociación 1:N), Pedido (asociación 1:N), Transaccion (asociación 1:N), Platillo (asociación N:M a través de sucursales agotadas), AuditLog (asociación 1:N).
+
+**Inventory (Inventario):**
+* Atributos: Control de existencias clasificado por tipo (especias, ingredientes o utensilios).
+* Relaciones: Sucursal (asociación 1:N).
+
+**Pedido:**
+* Atributos: Registro y estado de las órdenes de compra para el abastecimiento.
+* Relaciones: Proveedor (asociación 1:N), Sucursal (asociación 1:N).
+
+**Proveedor:**
+* Atributos: Identificación y folios del catálogo de proveedores externos.
+* Relaciones: Pedido (asociación 1:N).
+
+**Platillo:**
+* Atributos: Información del menú, receta, precio, estado de disponibilidad e indicador de menú del día.
+* Relaciones: Sucursal (asociación N:M para el control de sedes donde se encuentra agotado).
+
+**Transaccion (Finanzas):**
+* Atributos: Flujo financiero de caja desglosado en ingresos y egresos.
+* Relaciones: Sucursal (asociación 1:N).
+
+**AuditLog (Bitácora):**
+* Atributos: Historial de acciones críticas realizadas en los módulos del sistema.
+* Relaciones: User (asociación 1:N), Sucursal (asociación 1:N).
+
+**Diagrama de Clase**
+   ![Clase](Imagenes/Clase.png)
 
 # 8 Interfaz Figma
 **Pagina Inicial**
