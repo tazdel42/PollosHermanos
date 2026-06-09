@@ -88,15 +88,45 @@ Modularidad mediante rutas y controladores en Node.js
 Componentes RESTful: usuarios, artículos, pedidos, pagos
 Frontend estático y API desacoplada para interoperabilidad
 
-# 4 Diagramas de Casos de Uso 
+# 4. Instalación
+
+
+## Instalación y Ejecución Local
+
+**Requisitos de software:**
+
+- Node.js (v18 o superior)
+- Express.js
+- MongoDB local
+- Navegador actualizado (Chrome, Firefox)
+
+**Requisitos de hardware:**
+
+- 4GB RAM mínimo
+- Procesador 2 GHz
+- 1GB de espacio libre
+
+**Para ejecutar este proyecto en tu entorno local, sigue estos pasos:**
+
+1. Clona el repositorio a tu computadora.
+2. Instala las dependencias ejecutando el siguiente comando en la terminal apuntando a la raíz del proyecto:
+   npm install
+3. Configura las variables de entorno:
+   - Copia el archivo .env.example y renómbralo a .env.
+   - Abre el nuevo archivo .env y llena las variables con tus propias credenciales locales (puerto, URI de MongoDB, etc.).
+4. Ejecuta el servidor:
+   npm run dev
+
+
+# 5 Diagramas de Casos de Uso 
 **Caso de uso Login**
 ![Diagrama de caso de uso Login](Imagenes/Login.png)
 
-# 5 Descripción de Casos de Uso 
+# 6 Descripción de Casos de Uso 
 **Caso de uso Login**
 ![Diagrama de caso de uso Login](Imagenes/DescripcionLogin.png)
 
-# 6 Diagrama Entidad-Relación
+# 7 Diagrama Entidad-Relación
 **Entidad relación**
 ![Entidad-Relación](Imagenes/Entidad-Relacion.jpeg)
 
