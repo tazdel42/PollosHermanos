@@ -7,21 +7,21 @@ const connectDB = require('./backend/config/db');
 
 const seedAdminUser = async () => {
   try {
-    // Conecta a la base de datos
+    //Conecta a la base de datos
     await connectDB();
 
-    // Verifica si el usuario administrador ya existe
+    //Verifica si el usuario administrador ya existe
     const adminExists = await User.findOne({ email: 'admin@polloshermanos.com' });
     if (adminExists) {
       console.log('El usuario administrador ya existe.');
       process.exit();
     }
 
-    // Encripta la contraseña
+    //Encripta la contraseña
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash('admin123', salt);
 
-    // Guarda el nuevo usuario administrador
+    //Guarda el nuevo usuario administrador
     const adminUser = new User({
       nombre: 'Gustavo Fring',
       email: 'admin@polloshermanos.com',

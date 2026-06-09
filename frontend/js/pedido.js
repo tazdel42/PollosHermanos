@@ -3,19 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const tablaPedidos = document.getElementById('tablaPedidos');
     const selectProveedor = document.getElementById('addProveedor');
 
-    // Variables para Agregar
+    //Variables para Agregar
     const btnGuardarNuevo = document.getElementById('btnGuardarNuevo');
     const formAgregar = document.getElementById('formAgregar');
 
-    // Variables para Editar
+    //Variables para Editar
     const btnGuardarEdicion = document.getElementById('btnGuardarEdicion');
     let idEnEdicion = null;
 
-    // URLs del API
+    //URLs del API
     const API_URL_PEDIDOS = '/api/pedidos';
     const API_URL_PROVEEDORES = '/api/proveedores';
 
-    // Función para obtener las credenciales
+    //Función para obtener las credenciales
     function getAuthHeaders() {
         const token = localStorage.getItem('token');
         if (!token) window.location.href = 'index.html';
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // Función para cargar proveedores en el select
+    //Función para cargar proveedores en el select
     const cargarProveedores = async () => {
         try {
             const respuesta = await fetch(API_URL_PROVEEDORES, {
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const proveedores = await respuesta.json();
 
             selectProveedor.innerHTML = '';
-            
+
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.textContent = 'Seleccione un proveedor...';
@@ -52,13 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Función para formatear fecha
+    //Función para formatear fecha
     const formatearFecha = (fechaISO) => {
         const date = new Date(fechaISO);
         return date.toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' });
     };
 
-    // Función para cargar los pedidos
+    //Función para cargar los pedidos
     const cargarPedidos = async () => {
         try {
             const respuesta = await fetch(API_URL_PEDIDOS, {
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Llamar a cargar al inicio
+    //Llamar a cargar al inicio
     cargarProveedores();
     cargarPedidos();
 
@@ -135,14 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tablaPedidos.addEventListener('click', async (event) => {
 
-        // Editar Estado
+        //Editar Estado
         if (event.target.classList.contains('btn-editar')) {
             idEnEdicion = event.target.getAttribute('data-id');
             const estadoActual = event.target.getAttribute('data-estado');
             document.getElementById('editEstado').value = estadoActual;
         }
 
-        // Eliminar
+        //Eliminar
         if (event.target.classList.contains('btn-eliminar')) {
             const idEliminar = event.target.getAttribute('data-id');
             if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {

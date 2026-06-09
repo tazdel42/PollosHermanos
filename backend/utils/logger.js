@@ -2,7 +2,8 @@ const AuditLog = require('../models/AuditLog');
 
 const logAction = async (req, accion, modulo, descripcion) => {
   try {
-    if (!req.user || !req.user._id) return; // Si no hay usuario logueado, ignorar
+    // Si no hay usuario logueado, ignorar
+    if (!req.user || !req.user._id) return;
 
     await AuditLog.create({
       usuario: req.user._id,

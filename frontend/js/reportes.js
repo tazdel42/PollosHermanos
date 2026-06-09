@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const cargarReportes = async () => {
         try {
-            // Mostrar estado de carga
+            //Muestra el estado de carga
             kpiBalance.innerText = '...';
             kpiEmpleados.innerText = '...';
             kpiInventario.innerText = '...';
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const datos = await respuesta.json();
 
-            // Llenar datos
+            //Llenar datos
             kpiBalance.innerText = `$${datos.finanzas.balance.toFixed(2)}`;
             detalleIngresos.innerText = `$${datos.finanzas.ingresos.toFixed(2)}`;
             detalleEgresos.innerText = `$${datos.finanzas.egresos.toFixed(2)}`;
@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const tbody = document.getElementById('tablaAuditoria');
             if (!tbody) return;
-            
+
             const respuesta = await fetch('/api/auditoria', { headers: window.getAuthHeaders() });
             if (!respuesta.ok) throw new Error("Error obteniendo auditoría");
             const logs = await respuesta.json();
-            
+
             tbody.innerHTML = '';
             if (logs.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No hay registros de auditoría</td></tr>';
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tr = document.createElement('tr');
                 const fecha = new Date(log.createdAt).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' });
                 const usuario = log.usuario ? log.usuario.nombre : 'Desconocido';
-                
+
                 let badgeColor = 'secondary';
                 if (log.accion === 'Crear') badgeColor = 'success';
                 if (log.accion === 'Actualizar') badgeColor = 'warning';

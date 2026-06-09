@@ -7,30 +7,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const entrada = document.getElementById('asistenciaEntrada');
     const salida = document.getElementById('asistenciaSalida');
-    
+
     function calcularHoras() {
         if (entrada.value && salida.value) {
             const [hE, mE] = entrada.value.split(':').map(Number);
             const [hS, mS] = salida.value.split(':').map(Number);
-            
+
             let horas = hS - hE;
             let mins = mS - mE;
-            
+
             if (mins < 0) {
                 horas--;
                 mins += 60;
             }
-            
+
             if (horas < 0) {
                 horas += 24;
             }
-            
+
             const total = horas + (mins / 60);
             document.getElementById('asistenciaHoras').value = total.toFixed(2);
         }
     }
 
-    if(entrada && salida) {
+    if (entrada && salida) {
         entrada.addEventListener('change', calcularHoras);
         salida.addEventListener('change', calcularHoras);
     }
@@ -41,7 +41,7 @@ async function cargarEmpleadosSelect() {
         const res = await fetch('/api/employees', { headers: window.getAuthHeaders() });
         const empleados = await res.json();
         const selectAsistencia = document.getElementById('asistenciaEmpleado');
-        
+
         if (selectAsistencia) {
             selectAsistencia.innerHTML = '<option value="">-- Selecciona un Empleado --</option>';
             empleados.forEach(emp => {
@@ -65,7 +65,7 @@ async function cargarAsistencias() {
         tabla.innerHTML = '';
 
         const userRole = localStorage.getItem('userRole') || 'empleado';
-        
+
         // Hide Admin elements
         if (userRole !== 'admin') {
             document.getElementById('divExportarAsistencias').style.display = 'none';
@@ -110,22 +110,22 @@ async function registrarAsistencia() {
     document.getElementById('asistenciaId').value = '';
     document.getElementById('asistenciaFecha').value = new Date().toISOString().split('T')[0];
     document.getElementById('asistenciaModalLabel').innerText = 'Registrar Asistencia';
-    
-    if(userRole !== 'admin') {
+
+    if (userRole !== 'admin') {
         // Automatically set the employee ID for normal employees based on their logged in email
         try {
             const res = await fetch('/api/employees', { headers: window.getAuthHeaders() });
             const empleados = await res.json();
             const email = localStorage.getItem('userEmail');
             const emp = empleados.find(e => e.correo === email);
-            if(emp) {
+            if (emp) {
                 // We add an option just for them to submit
                 const select = document.getElementById('asistenciaEmpleado');
                 select.innerHTML = `<option value="${emp._id}" selected>${emp.nombre}</option>`;
             }
         } catch (e) { console.log(e) }
     }
-    
+
     asistenciaModal.show();
 }
 
@@ -150,6 +150,12 @@ async function guardarAsistencia() {
     const fecha = document.getElementById('asistenciaFecha').value;
     const horaEntrada = document.getElementById('asistenciaEntrada').value;
     const horaSalida = document.getElementById('asistenciaSalida').value;
+
+    if (!idEmpleado || !fecha || !horaEntrada || !horaSalida) {
+        alert("Por favor, rellena todos los campos obligatorios, incluyendo la hora de entrada y la de salida.");
+        return;
+    }
+
     const horasTrabajadas = parseFloat(document.getElementById('asistenciaHoras').value) || 0;
     const bonoDiario = parseFloat(document.getElementById('asistenciaBono').value) || 0;
     const laborDia = document.getElementById('asistenciaLabor').value;
@@ -194,10 +200,10 @@ async function eliminarAsistencia(id) {
 }
 
 // Funciones para Exportar Asistencias
-window.exportarAsistenciasPDF = function() {
+window.exportarAsistenciasPDF = function () {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF('landscape');
-    
+
     doc.text("Reporte de Asistencias - Los Pollos Hermanos", 14, 15);
     doc.setFontSize(10);
     doc.text(`Fecha de generación: ${new Date().toLocaleDateString()}`, 14, 22);
@@ -216,8 +222,7 @@ window.exportarAsistenciasPDF = function() {
             { header: 'Labor', dataKey: 6 },
             { header: 'Estado', dataKey: 7 }
         ],
-        didParseCell: function(data) {
-            // Ignorar columna 8 (Acciones)
+        didParseCell: function (data) {
             if (data.column.index === 8) {
                 data.cell.styles.cellWidth = 0;
                 data.cell.styles.fontSize = 0;
@@ -230,7 +235,7 @@ window.exportarAsistenciasPDF = function() {
     doc.save("Reporte_Asistencias.pdf");
 };
 
-window.exportarAsistenciasExcel = function() {
+window.exportarAsistenciasExcel = function () {
     const tablaHtml = document.getElementById("tablaControlHtml");
     const wb = XLSX.utils.table_to_book(tablaHtml, { sheet: "Asistencias" });
     XLSX.writeFile(wb, "Reporte_Asistencias.xlsx");

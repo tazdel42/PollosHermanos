@@ -1,7 +1,7 @@
-// Lógica de "Recordarme
+//Lógica de "Recordarme"
 if (localStorage.getItem('token')) {
     if (localStorage.getItem('rememberMe') !== 'true' && !sessionStorage.getItem('sessionActive')) {
-        // Si no activó Recordarme y abrió nueva pestaña, limpiamos
+        //Si no activó Recordarme y abrió nueva pestaña, limpiamos
         localStorage.clear();
         window.location.href = 'login.html';
     } else {
@@ -9,7 +9,7 @@ if (localStorage.getItem('token')) {
     }
 }
 
-// Función global para obtener headers de autenticación
+//Función global para obtener headers de autenticación
 
 window.getAuthHeaders = function () {
     const token = localStorage.getItem('token');
@@ -26,23 +26,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const contenido = document.getElementById('contenido');
 
     btnToggle.addEventListener('click', function () {
-        // Alterna la clase 'oculto' en la barra lateral
+        //Alterna la clase 'oculto' en la barra lateral
         sidebar.classList.toggle('oculto');
 
-        // Alterna la clase 'expandido' en el contenido para que ocupe toda la pantalla
+        //Alterna la clase 'expandido' en el contenido para que ocupe toda la pantalla
         contenido.classList.toggle('expandido');
     });
 
-    // Lógica del Perfil de Usuario
+    //Lógica del Perfil de Usuario
     const userName = localStorage.getItem('userName') || 'Usuario';
     const userEmail = localStorage.getItem('userEmail') || 'Sin correo';
     const userRole = localStorage.getItem('userRole') || 'empleado';
 
-    // Ocultar links de administrador si no es admin
+    //Oculta los links de administrador si no es admin
     if (userRole !== 'admin') {
         const adminLinks = ['proveedores.html', 'empleados.html', 'sucursales.html', 'finanzas.html', 'reportes.html'];
 
-        // 1. Ocultar en el Sidebar
+        //1. Oculta en el Sidebar
         const linksSidebar = sidebar.querySelectorAll('a');
         linksSidebar.forEach(link => {
             const href = link.getAttribute('href');
@@ -51,13 +51,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // 2. Ocultar tarjetas en el Dashboard (PaginaInicial.html)
+        //2. Oculta las tarjetas en el Dashboard (PaginaInicial.html)
         if (contenido) {
             const linksCards = contenido.querySelectorAll('a.btn');
             linksCards.forEach(link => {
                 const href = link.getAttribute('href');
                 if (adminLinks.includes(href)) {
-                    // Ocultar la columna entera que contiene la tarjeta
+                    //Oculta la columna entera que contiene la tarjeta
                     const col = link.closest('.col-12');
                     if (col) {
                         col.style.display = 'none';
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
         userEmailSpan.setAttribute('data-bs-toggle', 'offcanvas');
         userEmailSpan.setAttribute('data-bs-target', '#perfilOffcanvas');
 
-        // Insertar campana de notificaciones junto al perfil
+        //Inserta la campana de notificaciones junto al perfil
         const navContainer = document.createElement('div');
         navContainer.className = 'd-flex align-items-center ms-auto me-3';
         navContainer.innerHTML = `
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Inyectar el Offcanvas dinámicamente en el body
+    //Inyecta el Offcanvas dinámicamente en el body
     const offcanvasHTML = `
         <div class="offcanvas offcanvas-end" tabindex="-1" id="perfilOffcanvas" aria-labelledby="perfilOffcanvasLabel">
             <div class="offcanvas-header" style="background-color: #3b3b98; color: white;">
@@ -141,13 +141,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.body.insertAdjacentHTML('beforeend', offcanvasHTML);
 
-    // Lógica para cerrar sesión
+    //Lógica para cerrar sesión
     document.getElementById('btnCerrarSesion').addEventListener('click', () => {
         localStorage.clear();
         window.location.href = 'login.html';
     });
 
-    // Fetch Alertas
+    //Fetch Alertas
     const cargarAlertas = async () => {
         try {
             const res = await fetch('/api/reportes/alertas', { headers: window.getAuthHeaders() });
@@ -196,6 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     cargarAlertas();
-    // Actualizar cada 60 segundos
+    //Actualiza cada 60 segundos
     setInterval(cargarAlertas, 60000);
 });

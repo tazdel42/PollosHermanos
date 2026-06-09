@@ -2,18 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tablaPlatillos = document.getElementById('tablaPlatillos');
 
-    // Variables para Agregar
+    //Variables para Agregar
     const btnGuardarNuevo = document.getElementById('btnGuardarNuevo');
     const formAgregar = document.getElementById('formAgregar');
 
-    // Variables para Editar
+    //Variables para Editar
     const btnGuardarEdicion = document.getElementById('btnGuardarEdicion');
     let idEnEdicion = null;
 
-    // URL del API
     const API_URL = '/api/platillos';
 
-    // Función auxiliar para convertir archivo a Base64
+    //Función auxiliar para convertir archivo a Base64
     const toBase64 = file => new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -21,21 +20,21 @@ document.addEventListener('DOMContentLoaded', () => {
         reader.onerror = error => reject(error);
     });
 
-    // Función para cargar los platillos desde la base de datos
+    //Función para cargar los platillos desde la base de datos
     const cargarPlatillos = async () => {
         try {
             const respuesta = await fetch(API_URL, { headers: window.getAuthHeaders() });
             const platillos = await respuesta.json();
 
             const userRole = localStorage.getItem('userRole') || 'empleado';
-            
-            // Ocultar botón de agregar si no es admin
+
+            //Oculta el botón de agregar si no es admin
             const btnAgregar = document.getElementById('btnAgregar');
             if (btnAgregar && userRole !== 'admin') {
                 btnAgregar.style.display = 'none';
             }
 
-            // Ocultar cabeceras de tabla si no es admin
+            //Oculta las cabeceras de tabla si no es admin
             const tableHeaders = document.querySelectorAll('thead th');
             if (userRole !== 'admin' && tableHeaders.length >= 7) {
                 tableHeaders[5].style.display = 'none'; // Menú del Día
@@ -46,14 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             platillos.forEach((platillo, index) => {
                 const badgeClass = platillo.estado === "Disponible" ? "bg-success" : "bg-danger";
-                
-                // Verificar si está agotado en la sucursal actual
+
+                //Verifica si está agotado en la sucursal actual
                 const userSucursal = localStorage.getItem('userSucursal');
                 const estaAgotadoLocal = userSucursal && platillo.sucursalesAgotado && platillo.sucursalesAgotado.some(suc => suc._id === userSucursal || suc === userSucursal);
                 const btnAgotadoText = estaAgotadoLocal ? 'Reactivar' : 'Agotar';
                 const btnAgotadoClass = estaAgotadoLocal ? 'btn-success' : 'btn-secondary';
-                
-                // Mostrar sucursales donde está agotado (para admins o info general)
+
+                //Muestra las sucursales donde está agotado (para admins o info general)
                 let agotadoEnHTML = '';
                 if (platillo.sucursalesAgotado && platillo.sucursalesAgotado.length > 0) {
                     const nombresAgotados = platillo.sucursalesAgotado.map(s => s.nombre || 'Desconocida').join(', ');
@@ -89,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Llamar a cargar platillos al inicio
+    //Llama a cargar platillos al inicio
     cargarPlatillos();
 
     if (btnGuardarNuevo) {
@@ -98,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const receta = document.getElementById('addReceta').value.trim();
             const precio = document.getElementById('addPrecio').value.trim();
             const estado = document.getElementById('addEstado').value;
-            
+
             const fileInput = document.getElementById('addImagen');
             let imagen = '';
             if (fileInput.files.length > 0) {
@@ -138,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tablaPlatillos.addEventListener('click', async (event) => {
 
-        // Editar el Platillo
+        //Editar el Platillo
         if (event.target.classList.contains('btn-editar')) {
             const filaEnEdicion = event.target.closest('tr');
             idEnEdicion = event.target.getAttribute('data-id');
@@ -155,13 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('editReceta').value = recetaActual;
             document.getElementById('editPrecio').value = precioActual;
             document.getElementById('editEstado').value = estadoActual;
-            
+
             const editImagenInput = document.getElementById('editImagen');
             editImagenInput.value = ''; // Limpiar selección previa
             editImagenInput.setAttribute('data-old-imagen', imagenActual || '');
         }
 
-        // Elimina el Platillo
+        //Elimina el Platillo
         if (event.target.classList.contains('btn-eliminar')) {
             const idEliminar = event.target.getAttribute('data-id');
             if (confirm('¿Estás seguro de que deseas eliminar este platillo?')) {
@@ -182,13 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Toggle Menu Del Dia
+        //Menu Del Dia
         if (event.target.classList.contains('switch-menu')) {
             const idToToggle = event.target.getAttribute('data-id');
             const isChecked = event.target.checked;
             const fila = event.target.closest('tr');
-            
-            // Obtenemos los valores actuales de la fila para no sobreescribir el resto con undefined
+
+            //Obtenemos los valores actuales de la fila para no sobreescribir el resto con undefined
             const celdas = fila.querySelectorAll('td');
             const nombre = celdas[1].innerText;
             const receta = celdas[2].innerText;
@@ -204,15 +203,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!respuesta.ok) {
                     alert('Error al actualizar el Menú del Día');
-                    event.target.checked = !isChecked; // revertir
+                    event.target.checked = !isChecked;
                 }
             } catch (error) {
                 console.error('Error:', error);
-                event.target.checked = !isChecked; // revertir
+                event.target.checked = !isChecked;
             }
         }
 
-        // Agotar en Sucursal
+        //Agotar en Sucursal
         if (event.target.classList.contains('btn-agotar')) {
             const idToToggle = event.target.getAttribute('data-id');
             try {
@@ -226,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     const errData = await respuesta.json();
                     if (errData.message === 'Se requiere especificar una sucursal') {
-                        // Es Administrador sin sucursal asignada. Abrir Modal de selección
+                        //Es Administrador sin sucursal asignada. Abrir Modal de selección
                         document.getElementById('platilloIdAgotar').value = idToToggle;
                         cargarSucursalesAdmin();
                         const modalAdmin = new bootstrap.Modal(document.getElementById('modalAgotarAdmin'));
@@ -241,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Lógica del botón de Confirmar en el Modal de Admin
+    //Lógica del botón de Confirmar en el Modal de Admin
     const btnConfirmarAgotar = document.getElementById('btnConfirmarAgotar');
     if (btnConfirmarAgotar) {
         btnConfirmarAgotar.addEventListener('click', async () => {
@@ -296,10 +295,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const receta = document.getElementById('editReceta').value.trim();
                 const precio = document.getElementById('editPrecio').value.trim();
                 const estado = document.getElementById('editEstado').value;
-                
+
                 const fileInput = document.getElementById('editImagen');
                 let imagen = fileInput.getAttribute('data-old-imagen') || '';
-                
+
                 if (fileInput.files.length > 0) {
                     try {
                         imagen = await toBase64(fileInput.files[0]);

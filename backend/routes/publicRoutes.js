@@ -3,8 +3,8 @@ const router = express.Router();
 const Platillo = require('../models/Platillo');
 const Sucursal = require('../models/Sucursal');
 
-// GET /api/public/menu
-// Devuelve los platillos para el cliente final
+
+//Devuelve los platillos para el cliente final
 router.get('/menu', async (req, res) => {
     try {
         const platillos = await Platillo.find({})
@@ -15,8 +15,8 @@ router.get('/menu', async (req, res) => {
     }
 });
 
-// GET /api/public/sucursales
-// Devuelve las sucursales para el cliente final
+
+//Devuelve las sucursales para el cliente final
 router.get('/sucursales', async (req, res) => {
     try {
         const sucursales = await Sucursal.find({ estado: 'Activa' });

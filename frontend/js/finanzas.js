@@ -145,7 +145,6 @@ window.exportarFinanzasPDF = function () {
         ],
         didParseCell: function (data) {
             if (data.column.index === 4) {
-                // Ignora columna Acciones
                 data.cell.styles.cellWidth = 0;
                 data.cell.styles.fontSize = 0;
                 data.cell.styles.textColor = [255, 255, 255];

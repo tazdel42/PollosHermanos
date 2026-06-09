@@ -2,18 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tablaSucursales = document.getElementById('tablaSucursales');
 
-    // Variables para Agregar
+    //Variables para Agregar
     const btnGuardarNuevo = document.getElementById('btnGuardarNuevo');
     const formAgregar = document.getElementById('formAgregar');
 
-    // Variables para Editar
+    //Variables para Editar
     const btnGuardarEdicion = document.getElementById('btnGuardarEdicion');
     let idEnEdicion = null;
 
-    // URL del API
+    //URL del API
     const API_URL = '/api/sucursales';
 
-    // Función para cargar sucursales desde la base de datos
+    //Función para cargar sucursales desde la base de datos
     const cargarSucursales = async () => {
         try {
             const respuesta = await fetch(API_URL, { headers: window.getAuthHeaders() });
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Llamar a cargar sucursales al inicio
+    //Llama a cargar sucursales al inicio
     cargarSucursales();
 
     if (btnGuardarNuevo) {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tablaSucursales.addEventListener('click', async (event) => {
 
-        // Editar Sucursal
+        //Editar Sucursal
         if (event.target.classList.contains('btn-editar')) {
             const filaEnEdicion = event.target.closest('tr');
             idEnEdicion = event.target.getAttribute('data-id');

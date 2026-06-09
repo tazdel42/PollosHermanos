@@ -7,8 +7,8 @@
     <title>Control de Asistencias | Los Pollos Hermanos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/empleados.css">
-    
-    <!-- Librerías para Exportar -->
+
+    <!--Librerías para Exportar-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -37,7 +37,7 @@
 
     <div id="contenido" class="contenido-principal">
 
-        <!-- Control de Personal (Asistencias) -->
+        <!--Control de Personal (Asistencias)-->
         <div class="card shadow-sm mt-4">
             <div class="card-header" style="background-color: #371991; color: white;">
                 Mi Asistencia
@@ -49,8 +49,10 @@
                         + Registrar Asistencia
                     </button>
                     <div id="divExportarAsistencias">
-                        <button class="btn btn-outline-danger me-2" onclick="exportarAsistenciasPDF()">📄 Exportar PDF</button>
-                        <button class="btn btn-outline-success" onclick="exportarAsistenciasExcel()">📊 Exportar Excel</button>
+                        <button class="btn btn-outline-danger me-2" onclick="exportarAsistenciasPDF()">📄 Exportar
+                            PDF</button>
+                        <button class="btn btn-outline-success" onclick="exportarAsistenciasExcel()">📊 Exportar
+                            Excel</button>
                     </div>
                 </div>
 
@@ -76,13 +78,15 @@
 
     </div>
 
-    <!-- Modal Asistencia -->
-    <div class="modal fade" id="asistenciaModal" tabindex="-1" aria-labelledby="asistenciaModalLabel" aria-hidden="true">
+    <!--Modal Asistencia-->
+    <div class="modal fade" id="asistenciaModal" tabindex="-1" aria-labelledby="asistenciaModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #371991; color: white;">
                     <h5 class="modal-title" id="asistenciaModalLabel">Registrar Asistencia</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="asistenciaForm">

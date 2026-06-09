@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Al cargar la página, se muestran los datos si el token es válido y tiene los permisos.
+    //Al cargar la página, se muestran los datos si el token es válido y tiene los permisos.
     cargarProveedores();
 });
 
-// Función para obtener las credenciales actuales
+//Función para obtener las credenciales actuales
 function getAuthHeaders() {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -15,7 +15,7 @@ function getAuthHeaders() {
     };
 }
 
-// Interceptar errores de autorización (401 o 403)
+//Interceptar errores de autorización (401 o 403)
 function manejarErrorPermisos(res) {
     if (res.status === 401 || res.status === 403) {
         alert("Acceso denegado: Esta página es exclusiva para Administradores con Permisos Completos.");
@@ -25,7 +25,7 @@ function manejarErrorPermisos(res) {
     return false;
 }
 
-// GET - Cargar Proveedores
+//Carga los proveedores
 async function cargarProveedores() {
     try {
         const res = await fetch('/api/proveedores', {
@@ -41,7 +41,7 @@ async function cargarProveedores() {
 
         proveedores.forEach(prov => {
             const tr = document.createElement('tr');
-            // Agregamos la columna folios y el botón Editar
+            //Agrega la columna folios y el botón Editar
             tr.innerHTML = `
                 <td>${prov._id.slice(-5).toUpperCase()}</td>
                 <td><strong>${prov.nombre}</strong></td>
@@ -59,7 +59,7 @@ async function cargarProveedores() {
     }
 }
 
-// POST - Agregar Proveedor
+//Agrega un proveedor
 async function agregarProveedor() {
     const nombre = document.getElementById('nombreProveedor').value.trim();
     const folios = document.getElementById('foliosProveedor').value.trim();
@@ -106,7 +106,7 @@ function abrirModalEditar(prov) {
     modalInstance.show();
 }
 
-// PUT - Guardar Edición
+//Guarda la edición del proveedor
 async function guardarEdicionProveedor() {
     const id = document.getElementById('editIdProveedor').value;
     const nombre = document.getElementById('editNombreProveedor').value.trim();
@@ -131,7 +131,7 @@ async function guardarEdicionProveedor() {
             const modalElement = document.getElementById('modalEditarProveedor');
             const modalInstance = bootstrap.Modal.getInstance(modalElement);
             modalInstance.hide();
-            cargarProveedores(); // Refrescamos la tabla
+            cargarProveedores();
         } else {
             const err = await res.json();
             alert("Error al actualizar: " + err.message);
@@ -141,7 +141,7 @@ async function guardarEdicionProveedor() {
     }
 }
 
-// DELETE - Eliminar Proveedor
+//Elimina un proveedor
 async function eliminarProveedor(id) {
     if (!confirm("¿Seguro que deseas eliminar a este proveedor de la base de datos?")) return;
 

@@ -1,5 +1,3 @@
-/* Diseño inspirado en "Los Pollos Hermanos" - Registro */
-
 body {
     font-family: 'Outfit', sans-serif;
     background-color: #f8f9fa;
@@ -21,18 +19,21 @@ body {
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
 }
 
 /* Colores de marca: Amarillo y Rojo */
 .btn-registro {
-    background-color: #ffc107; /* Amarillo Pollos */
+    background-color: #ffc107;
+    /* Amarillo Pollos */
     border-color: #ffc107;
-    color: #dc3545 !important; /* Texto rojo */
+    color: #dc3545 !important;
+    /* Texto rojo */
     transition: all 0.2s ease;
 }
 
-.btn-registro:hover, .btn-registro:focus {
+.btn-registro:hover,
+.btn-registro:focus {
     background-color: #ffb300;
     border-color: #ffb300;
     transform: scale(1.02);
@@ -43,18 +44,20 @@ body {
     height: 80px;
     border-radius: 50%;
     font-size: 1.5rem;
-    border: 3px solid #dc3545; /* Borde rojo */
+    border: 3px solid #dc3545;
+    /* Borde rojo */
 }
 
 /* Efectos de input flotante */
-.form-floating > .form-control:focus ~ label,
-.form-floating > .form-control:not(:placeholder-shown) ~ label,
-.form-floating > .form-select:focus ~ label,
-.form-floating > .form-select:not(:placeholder-shown) ~ label {
+.form-floating>.form-control:focus~label,
+.form-floating>.form-control:not(:placeholder-shown)~label,
+.form-floating>.form-select:focus~label,
+.form-floating>.form-select:not(:placeholder-shown)~label {
     color: #dc3545;
 }
 
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
     border-color: #ffc107;
     box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
 }
