@@ -2,6 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const formInventario = document.getElementById('formInventario');
     const tablaInventario = document.getElementById('tablaInventario');
+    const formEditarCantidad = document.getElementById('formEditarCantidad');
+    let modalEditarCantidadInstance;
+    
+    // Inicializar el modal de edición
+    const modalEditarElement = document.getElementById('modalEditarCantidad');
+    if (modalEditarElement) {
+        modalEditarCantidadInstance = new bootstrap.Modal(modalEditarElement);
+    }
     
     const userRole = localStorage.getItem('userRole') || 'empleado';
     const btnAgregar = document.getElementById('btnAgregar');
@@ -84,6 +92,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Guardar actualización de cantidad
+    if (formEditarCantidad) {
+        formEditarCantidad.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const idEditar = document.getElementById('editarArticuloId').value;
+            const nuevaCantidad = document.getElementById('nuevaCantidadArticulo').value;
+
+            try {
+                const respuesta = await fetch(`${API_URL}/${idEditar}`, {
+                    method: 'PUT',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify({ cantidad: Number(nuevaCantidad) })
+                });
+
+                if (respuesta.ok) {
+                    if (modalEditarCantidadInstance) modalEditarCantidadInstance.hide();
+                    cargarInventario();
+                } else {
+                    alert('Error al actualizar la cantidad.');
+                }
+            } catch (error) {
+                console.error('Error al actualizar:', error);
+            }
+        });
+    }
+
     // Delegación de eventos para Editar y Eliminar
     tablaInventario.addEventListener('click', async (event) => {
         // Eliminar
@@ -112,24 +147,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const idEditar = event.target.getAttribute('data-id');
             const cantidadActual = event.target.getAttribute('data-cantidad');
             
-            const nuevaCantidad = prompt('Ingresa la nueva cantidad del artículo:', cantidadActual);
+            // Llenar el formulario del modal
+            document.getElementById('editarArticuloId').value = idEditar;
+            document.getElementById('nuevaCantidadArticulo').value = cantidadActual;
             
-            if (nuevaCantidad !== null && nuevaCantidad.trim() !== '') {
-                try {
-                    const respuesta = await fetch(`${API_URL}/${idEditar}`, {
-                        method: 'PUT',
-                        headers: getAuthHeaders(),
-                        body: JSON.stringify({ cantidad: Number(nuevaCantidad) })
-                    });
-
-                    if (respuesta.ok) {
-                        cargarInventario();
-                    } else {
-                        alert('Error al actualizar la cantidad.');
-                    }
-                } catch (error) {
-                    console.error('Error al actualizar:', error);
-                }
+            // Mostrar el modal
+            if (modalEditarCantidadInstance) {
+                modalEditarCantidadInstance.show();
             }
         }
     });
