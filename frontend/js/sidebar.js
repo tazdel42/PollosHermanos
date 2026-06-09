@@ -1,5 +1,17 @@
+// Lógica de "Recordarme
+if (localStorage.getItem('token')) {
+    if (localStorage.getItem('rememberMe') !== 'true' && !sessionStorage.getItem('sessionActive')) {
+        // Si no activó Recordarme y abrió nueva pestaña, limpiamos
+        localStorage.clear();
+        window.location.href = 'login.html';
+    } else {
+        sessionStorage.setItem('sessionActive', 'true');
+    }
+}
+
 // Función global para obtener headers de autenticación
-window.getAuthHeaders = function() {
+
+window.getAuthHeaders = function () {
     const token = localStorage.getItem('token');
     if (!token) window.location.href = 'login.html';
     return {
@@ -16,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     btnToggle.addEventListener('click', function () {
         // Alterna la clase 'oculto' en la barra lateral
         sidebar.classList.toggle('oculto');
-        
+
         // Alterna la clase 'expandido' en el contenido para que ocupe toda la pantalla
         contenido.classList.toggle('expandido');
     });
@@ -29,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Ocultar links de administrador si no es admin
     if (userRole !== 'admin') {
         const adminLinks = ['proveedores.html', 'empleados.html', 'sucursales.html', 'finanzas.html', 'reportes.html'];
-        
+
         // 1. Ocultar en el Sidebar
         const linksSidebar = sidebar.querySelectorAll('a');
         linksSidebar.forEach(link => {
@@ -133,11 +145,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const badge = document.getElementById('badgeAlertas');
             const lista = document.getElementById('listaAlertas');
-            
+
             if (alertas.length > 0) {
                 badge.textContent = alertas.length;
                 badge.classList.remove('d-none');
-                
+
                 lista.innerHTML = '';
                 alertas.forEach(alerta => {
                     lista.innerHTML += `

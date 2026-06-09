@@ -3,6 +3,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
     const email = document.getElementById('floatingInput').value;
     const password = document.getElementById('floatingPassword').value;
+    const rememberMe = document.getElementById('flexCheckDefault').checked;
     const alertBox = document.getElementById('alertBox');
 
     // Alerta de Reinicio
@@ -26,6 +27,10 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             localStorage.setItem('userName', data.nombre);
             localStorage.setItem('userEmail', data.email);
             if (data.sucursal) localStorage.setItem('userSucursal', data.sucursal);
+
+            // Guardamos la preferencia de sesión
+            localStorage.setItem('rememberMe', rememberMe);
+            sessionStorage.setItem('sessionActive', 'true');
 
             // Esto es el mensaje de éxito
             alertBox.classList.remove('d-none', 'alert-danger');
