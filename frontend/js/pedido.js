@@ -34,9 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const proveedores = await respuesta.json();
 
-            selectProveedor.innerHTML = '<option value="">Seleccione un proveedor...</option>';
+            selectProveedor.innerHTML = '';
+            
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'Seleccione un proveedor...';
+            selectProveedor.appendChild(defaultOption);
+
             proveedores.forEach(prov => {
-                selectProveedor.innerHTML += `<option value="${prov._id}">${prov.nombre}</option>`;
+                const option = document.createElement('option');
+                option.value = prov._id;
+                option.textContent = prov.nombre;
+                selectProveedor.appendChild(option);
             });
         } catch (error) {
             console.error('Error al cargar proveedores:', error);

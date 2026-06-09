@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const navContainer = document.createElement('div');
         navContainer.className = 'd-flex align-items-center ms-auto me-3';
         navContainer.innerHTML = `
-            <div class="position-relative me-3" style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#alertasOffcanvas">
+            <div id="btnCampanaAlertas" class="position-relative me-3" style="cursor: pointer;" data-bs-toggle="offcanvas" data-bs-target="#alertasOffcanvas">
                 <span style="font-size: 1.5rem;">🔔</span>
                 <span id="badgeAlertas" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" style="font-size: 0.65rem;">
                     0
@@ -88,6 +88,17 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         `;
         userEmailSpan.parentNode.insertBefore(navContainer, userEmailSpan);
+
+        document.getElementById('btnCampanaAlertas').addEventListener('click', () => {
+            document.getElementById('badgeAlertas').classList.add('d-none');
+            fetch('/api/reportes/alertas', { headers: window.getAuthHeaders() })
+                .then(res => res.json())
+                .then(alertas => {
+                    const currentAlertIds = alertas.map(a => a.id);
+                    localStorage.setItem('alertasLeidas', JSON.stringify(currentAlertIds));
+                    setTimeout(cargarAlertas, 500); // Reload after brief delay to remove "Nueva" tags smoothly
+                }).catch(err => console.error('Error marcando alertas como leídas:', err));
+        });
     }
 
     // Inyectar el Offcanvas dinámicamente en el body
@@ -146,16 +157,29 @@ document.addEventListener('DOMContentLoaded', function () {
             const badge = document.getElementById('badgeAlertas');
             const lista = document.getElementById('listaAlertas');
 
+            let alertasLeidas = JSON.parse(localStorage.getItem('alertasLeidas') || '[]');
+            const currentAlertIds = alertas.map(a => a.id);
+            alertasLeidas = alertasLeidas.filter(id => currentAlertIds.includes(id));
+            localStorage.setItem('alertasLeidas', JSON.stringify(alertasLeidas));
+
+            const unreadCount = alertas.filter(a => !alertasLeidas.includes(a.id)).length;
+
             if (alertas.length > 0) {
-                badge.textContent = alertas.length;
-                badge.classList.remove('d-none');
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount;
+                    badge.classList.remove('d-none');
+                } else {
+                    badge.classList.add('d-none');
+                }
 
                 lista.innerHTML = '';
                 alertas.forEach(alerta => {
+                    const isRead = alertasLeidas.includes(alerta.id);
+                    const bgClass = isRead ? 'bg-light text-muted' : 'bg-white';
                     lista.innerHTML += `
-                        <div class="list-group-item list-group-item-action border-start border-${alerta.color} border-4 mb-2 shadow-sm rounded">
+                        <div class="list-group-item list-group-item-action ${bgClass} border-start border-${alerta.color} border-4 mb-2 shadow-sm rounded">
                             <div class="d-flex w-100 justify-content-between">
-                                <h6 class="mb-1 fw-bold text-${alerta.color}">${alerta.tipo}</h6>
+                                <h6 class="mb-1 fw-bold text-${alerta.color}">${alerta.tipo} ${!isRead ? '<span class="badge bg-danger ms-1">Nueva</span>' : ''}</h6>
                                 <small class="text-muted">${new Date(alerta.fecha).toLocaleDateString()}</small>
                             </div>
                             <p class="mb-1 text-sm">${alerta.mensaje}</p>

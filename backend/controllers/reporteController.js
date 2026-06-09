@@ -67,6 +67,7 @@ exports.getAlertas = async (req, res) => {
         const inventarioCritico = await Inventory.find({ ...query, cantidad: { $lt: 10 } });
         inventarioCritico.forEach(item => {
             alertas.push({
+                id: `inv_${item._id}`,
                 tipo: 'Inventario',
                 mensaje: `El producto "${item.nombre}" tiene nivel crítico (${item.cantidad} ${item.unidad}).`,
                 fecha: new Date(),
@@ -78,6 +79,7 @@ exports.getAlertas = async (req, res) => {
         const pedidosPendientes = await Pedido.find({ ...query, estado: 'Pendiente' }).populate('proveedor', 'nombre');
         pedidosPendientes.forEach(pedido => {
             alertas.push({
+                id: `ped_${pedido._id}`,
                 tipo: 'Pedido',
                 mensaje: `Pedido pendiente de ${pedido.proveedor ? pedido.proveedor.nombre : 'Proveedor Desconocido'}.`,
                 fecha: pedido.createdAt,
