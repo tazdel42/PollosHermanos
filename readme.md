@@ -88,21 +88,100 @@ Modularidad mediante rutas y controladores en Node.js
 Componentes RESTful: usuarios, artículos, pedidos, pagos
 Frontend estático y API desacoplada para interoperabilidad
 
-# 4 Diagramas de Casos de Uso 
+# 4. Instalación
+
+
+## Instalación y Ejecución Local
+
+**Requisitos de software:**
+
+- Node.js (v18 o superior)
+- Express.js
+- MongoDB local
+- Navegador actualizado (Chrome, Firefox)
+
+**Requisitos de hardware:**
+
+- 4GB RAM mínimo
+- Procesador 2 GHz
+- 1GB de espacio libre
+
+**Para ejecutar este proyecto en tu entorno local, sigue estos pasos:**
+
+1. Clona el repositorio a tu computadora.
+2. Instala las dependencias ejecutando el siguiente comando en la terminal apuntando a la raíz del proyecto:
+   npm install
+3. Configura las variables de entorno:
+   - Copia el archivo .env.example y renómbralo a .env.
+   - Abre el nuevo archivo .env y llena las variables con tus propias credenciales locales (puerto, URI de MongoDB, etc.).
+4. Ejecuta el servidor:
+   npm run dev
+
+
+# 5 Diagramas de Casos de Uso 
 **Caso de uso Login**
 ![Diagrama de caso de uso Login](Imagenes/Login.png)
 
-# 5 Descripción de Casos de Uso 
+# 6 Descripción de Casos de Uso 
 **Caso de uso Login**
 ![Diagrama de caso de uso Login](Imagenes/DescripcionLogin.png)
 
-# 6 Diagrama Entidad-Relación
-**Entidad relación**
-![Entidad-Relación](Imagenes/Entidad-Relacion.jpeg)
+# 7 Diagrama Entidad-Relación Y Diagrama de Clase
+**Diagrama de Entidad relación**
+   ![Entidad-Relación](Imagenes/Entidad-Relaciones.png)
 
-# Interfaz Figma
+**Descripción de las Entidades y Relaciones**
+**User (Usuario):**
+* Atributos: Credenciales de acceso, rol asignado, permisos de seguridad y estado de la cuenta.
+* Relaciones: Employee (asociación 1:1), Sucursal (asociación 1:N), AuditLog (asociación 1:N).
+
+**Employee (Empleado):**
+* Atributos: Información laboral y personal del trabajador, número único de empleado.
+* Relaciones: User (asociación 1:1), Sucursal (asociación 1:N), Asistencia (composición 1:N).
+
+**Asistencia (Subdocumento/Entidad Débil):**
+* Atributos: Registro de horas de entrada, salida, bono diario y estado de asistencia por día.
+* Relaciones: Employee (composición 1:1).
+
+**Sucursal:**
+* Atributos: Datos de contacto y ubicación física del establecimiento.
+* Relaciones: Employee (asociación 1:N), User (asociación 1:N), Inventory (asociación 1:N), Pedido (asociación 1:N), Transaccion (asociación 1:N), Platillo (asociación N:M a través de sucursales agotadas), AuditLog (asociación 1:N).
+
+**Inventory (Inventario):**
+* Atributos: Control de existencias clasificado por tipo (especias, ingredientes o utensilios).
+* Relaciones: Sucursal (asociación 1:N).
+
+**Pedido:**
+* Atributos: Registro y estado de las órdenes de compra para el abastecimiento.
+* Relaciones: Proveedor (asociación 1:N), Sucursal (asociación 1:N).
+
+**Proveedor:**
+* Atributos: Identificación y folios del catálogo de proveedores externos.
+* Relaciones: Pedido (asociación 1:N).
+
+**Platillo:**
+* Atributos: Información del menú, receta, precio, estado de disponibilidad e indicador de menú del día.
+* Relaciones: Sucursal (asociación N:M para el control de sedes donde se encuentra agotado).
+
+**Transaccion (Finanzas):**
+* Atributos: Flujo financiero de caja desglosado en ingresos y egresos.
+* Relaciones: Sucursal (asociación 1:N).
+
+**AuditLog (Bitácora):**
+* Atributos: Historial de acciones críticas realizadas en los módulos del sistema.
+* Relaciones: User (asociación 1:N), Sucursal (asociación 1:N).
+
+**Diagrama de Clase**
+   ![Clase](Imagenes/Clase.png)
+
+# 8 Interfaz Figma
 **Pagina Inicial**
 ![Login](Imagenes/PaginaInicial.jpeg)
 
 **Pagina de Recuperación**
 ![Recuperar contraseña](Imagenes/Registro.jpeg)
+
+# Pagina de muestra
+
+**Este es el link de la pagina web de pollos hermanos** 
+- [**Link de la pagina**](https://ideal-trout-r4w7j5vwp69jcvwr-5000.app.github.dev/)
