@@ -9,6 +9,13 @@ if (localStorage.getItem('token')) {
     }
 }
 
+//Prevenir cache del botón Atrás (Bfcache)
+window.addEventListener('pageshow', function (event) {
+    if (event.persisted) {
+        window.location.reload();
+    }
+});
+
 //Función global para obtener headers de autenticación
 
 window.getAuthHeaders = function () {
@@ -21,6 +28,31 @@ window.getAuthHeaders = function () {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
+    //Validar rol actual con el backend siempre que se carga una página protegida
+    if (localStorage.getItem('token')) {
+        fetch('/api/auth/me', { headers: window.getAuthHeaders() })
+            .then(res => {
+                if (res.status === 401 || res.status === 403) {
+                    localStorage.clear();
+                    window.location.href = 'login.html';
+                    throw new Error('No autorizado');
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data && (data.rol !== localStorage.getItem('userRole') || data.estado !== 'Activo')) {
+                    if (data.estado !== 'Activo') {
+                        localStorage.clear();
+                        window.location.href = 'login.html';
+                    } else {
+                        localStorage.setItem('userRole', data.rol);
+                        window.location.reload(); // Recargar para aplicar los cambios en la UI
+                    }
+                }
+            })
+            .catch(err => console.error('Error validando sesión:', err));
+    }
+
     const btnToggle = document.getElementById('btnToggle');
     const sidebar = document.getElementById('sidebar');
     const contenido = document.getElementById('contenido');

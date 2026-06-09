@@ -26,8 +26,22 @@ exports.registerUser = async (req, res) => {
       permisos: permisosAsignados
     });
 
-    const count = await Employee.countDocuments();
-    const noEmpleado = `EMP-${String(count + 1).padStart(3, '0')}`;
+    // Buscar el último empleado creado para evitar colisiones si se han borrado registros
+    const lastEmployee = await Employee.findOne().sort({ createdAt: -1 });
+    let nextCount = 1;
+    if (lastEmployee && lastEmployee.noEmpleado) {
+      const parts = lastEmployee.noEmpleado.split('-');
+      if (parts.length === 2) {
+        const lastNumber = parseInt(parts[1], 10);
+        if (!isNaN(lastNumber)) {
+          nextCount = lastNumber + 1;
+        }
+      }
+    } else {
+      // Fallback a contar documentos si no hay último o formato extraño
+      nextCount = (await Employee.countDocuments()) + 1;
+    }
+    const noEmpleado = `EMP-${String(nextCount).padStart(3, '0')}`;
 
     const newEmployee = new Employee({
       noEmpleado,
@@ -102,4 +116,13 @@ exports.loginUser = async (req, res) => {
     console.error(err.message);
     res.status(500).json({ message: 'Error en el servidor al iniciar sesión' });
   }
+};
+
+// Devuelve los datos de sesión actualizados para verificar si cambiaron de rol o estado
+exports.getMe = async (req, res) => {
+  res.json({
+    rol: req.user.rol,
+    permisos: req.user.permisos,
+    estado: req.user.estado
+  });
 };
