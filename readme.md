@@ -184,4 +184,4 @@ Frontend estático y API desacoplada para interoperabilidad
 # Pagina de muestra
 
 **Este es el link de la pagina web de pollos hermanos** 
-- [**Link de la pagina**](https://ideal-trout-r4w7j5vwp69jcvwr-5000.app.github.dev/)
+- [**Link de la pagina**](https://super-dollop-wrxvwqjxg4qqh5wvx-5000.app.github.dev/)
